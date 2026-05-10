@@ -1,0 +1,97 @@
+# =============================================================
+# Environment
+# =============================================================
+.env
+
+# =============================================================
+# Python (legacy backend remnants)
+# =============================================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+venv312/
+venv_py*/
+.venv/
+env/
+.env.venv/
+
+# =============================================================
+# Database
+# =============================================================
+*.db
+*.sqlite3
+
+# =============================================================
+# IDE
+# =============================================================
+.vscode/
+.idea/
+*.swp
+*.iml
+
+# =============================================================
+# Logs
+# =============================================================
+*.log
+
+# =============================================================
+# Build artifacts
+# =============================================================
+dist/
+build/
+*.egg-info/
+
+# =============================================================
+# Flutter / Dart
+# =============================================================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+.packages
+.pub-cache/
+.pub/
+
+# Auto-generated plugin registrants
+**/generated_plugin_registrant.cc
+**/generated_plugin_registrant.dart
+**/generated_plugin_registrant.h
+**/generated_plugins.cmake
+**/GeneratedPluginRegistrant.*
+
+# Android
+android/.gradle/
+android/captures/
+android/local.properties
+android/key.properties
+android/keystore.jks
+android/app/debug/
+android/app/profile/
+android/app/release/
+*.jks
+*.keystore
+
+# iOS
+ios/Pods/
+ios/Podfile.lock
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/App.framework
+ios/Flutter/ephemeral/
+
+# Desktop ephemeral folders
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+windows/flutter/ephemeral/
+
+# =============================================================
+# Misc project leftovers
+# =============================================================
+project.txt
+tools/
