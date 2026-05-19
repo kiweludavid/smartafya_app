@@ -1,4 +1,4 @@
-# Smart Afya Solution - Flutter Frontend
+﻿# Smart Afya Solution - Flutter Frontend
 
 > Flutter frontend for Smart Afya Solution, a mental health consultation platform for clients and doctors.
 > The app connects to the Smart Afya backend API and provides role-based workflows for booking, scheduling, consultation management, messaging, payments, and feedback.
@@ -357,4 +357,3 @@ Check platform notification permissions, especially on Android and iOS. Local no
 - Improve offline and retry behavior for weak network conditions.
 - Expand environment examples for staging and production deployments.
 - Add CI commands for analyze, format check, and tests.
-- Rename the Flutter package from the starter name `flutter_application_1` to a production app package name.

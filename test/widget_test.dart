@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_application_1/screens/login_screen.dart';
+import 'package:smart_afya/screens/login_screen.dart';
 
 void main() {
   testWidgets('Login screen renders brand title', (WidgetTester tester) async {
