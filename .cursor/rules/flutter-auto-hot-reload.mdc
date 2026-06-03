@@ -1,0 +1,25 @@
+---
+description: After Flutter UI/code changes, hot reload the running app automatically
+globs: smartafya_app/**/*.dart
+alwaysApply: false
+---
+
+# Flutter auto hot reload
+
+When you finish editing Dart files under `smartafya_app/`, **always hot reload** before ending your turn (if a debug session is running).
+
+## How to reload (try in order)
+
+1. **Dart MCP** (preferred when the app was started via MCP `launch_app`):
+   - `connect_dart_tooling_daemon` with the running app's DTD URI
+   - `hot_reload`
+
+2. **Helper script** (when `flutter run` is active in a terminal):
+   ```powershell
+   Set-Location "smartafya_app/smartafya_app"
+   .\scripts\hot-reload.ps1
+   ```
+
+3. **Manual fallback**: If reload fails, tell the user to press **r** in the `flutter run` terminal.
+
+Do not skip reload after UI/copy/layout changes the user should see immediately.
