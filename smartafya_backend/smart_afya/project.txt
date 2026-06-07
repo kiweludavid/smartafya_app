@@ -1,0 +1,346 @@
+You are a senior backend engineer and system architect specializing in scalable production systems using FastAPI.
+
+I am building a real-world mobile application called **Smart Afya Solution**, a mental health consultation platform. The frontend is being developed in Flutter, and I am responsible for building a complete production-ready backend.
+
+Your task is to generate a FULL backend system using FastAPI that is clean, scalable, and easy for a Flutter frontend developer to integrate with.
+
+---
+
+# 🎯 OBJECTIVE
+
+Build a production-ready FastAPI backend with:
+
+* Clean architecture
+* Modular structure
+* JWT authentication
+* PostgreSQL support (SQLite for development)
+* Well-documented APIs for frontend consumption
+
+---
+
+# 🧠 SYSTEM OVERVIEW
+
+The system includes:
+
+* Clients (patients)
+* Doctors (psychologists, psychiatrists, therapists, clerics)
+* Admin
+
+---
+
+# 🚨 CRITICAL CLIENT REQUIREMENTS (DO NOT IGNORE)
+
+## 1. PATIENT CONSENT (VERY IMPORTANT)
+
+* Before submitting mental health challenges:
+
+  * Patient MUST accept Terms & Conditions
+  * Store:
+
+    * consent_given (boolean)
+    * consent_timestamp
+* Block submission if not accepted
+
+---
+
+## 2. PATIENT CHOICE OF SPECIALIST
+
+* Patient can:
+
+  * Select a specific doctor (if known)
+  * Or leave unassigned for admin
+* Include:
+
+  * influencer specialists / clerics support
+
+---
+
+## 3. ADMIN RESTRICTIONS
+
+* Admin:
+
+  * CAN view doctor reports
+  * CANNOT edit or delete doctor reports
+
+---
+
+## 4. ENHANCED FEEDBACK SYSTEM
+
+Feedback must include:
+
+* Treatment feedback (doctor performance)
+* App feedback (UX, features)
+* Allow extensible structure (future improvements)
+
+---
+
+## 5. SPECIALIST TRANSFER FEATURE
+
+Doctor can:
+
+* Transfer patient to another specialist
+
+System must:
+
+* Update session automatically
+* Notify:
+
+  * Admin
+  * Patient
+* Log transfer history
+
+---
+
+## 6. DOCTOR UNAVAILABILITY SYSTEM
+
+Doctor can:
+
+* Mark themselves unavailable for a session
+
+System must:
+
+* Notify patient
+* Provide options:
+
+  1. Transfer to another specialist
+  2. Reschedule session
+
+---
+
+## 7. PHYSICAL SESSION PAYMENT LOGIC
+
+* Payment is NOT fixed
+* Payment is agreed manually between:
+
+  * Admin
+  * Patient
+* Doctor must:
+
+  * Be notified
+  * Accept session
+
+---
+
+# ⚙️ TECH STACK
+
+* FastAPI
+* Python
+* PostgreSQL (SQLite for dev)
+* SQLAlchemy or SQLModel
+* JWT Authentication
+* bcrypt password hashing
+
+---
+
+# 📁 PROJECT STRUCTURE
+
+app/
+├── main.py
+├── core/
+├── db/
+├── models/
+├── schemas/
+├── repositories/
+├── services/
+├── api/
+│    └── v1/endpoints/
+
+---
+
+# 🧱 CORE FEATURES
+
+## AUTH SYSTEM
+
+* Register (Client / Doctor)
+* Login
+* JWT auth
+* Role-based access
+
+---
+
+## USER MODEL
+
+Include:
+
+* id (UUID)
+* full_name
+* email
+* phone
+* role
+* hashed_password
+* created_at
+
+---
+
+## BOOKING SYSTEM (UPDATED)
+
+Include:
+
+* mental_health_description
+* consent_given (REQUIRED)
+* preferred_specialist_id (optional)
+* session_type (audio/video/physical)
+* duration
+* preferred_dates (at least 3)
+
+---
+
+## SESSION SYSTEM (ADVANCED)
+
+Include:
+
+* doctor assignment
+* meeting link (mock)
+* status:
+
+  * pending
+  * scheduled
+  * completed
+  * transferred
+  * cancelled
+
+---
+
+## TRANSFER SYSTEM
+
+Create:
+
+* transfer_logs table
+
+Track:
+
+* from_doctor_id
+* to_doctor_id
+* reason
+* timestamp
+
+---
+
+## DOCTOR AVAILABILITY SYSTEM
+
+* availability status
+* unavailable notification
+* trigger reschedule/transfer options
+
+---
+
+## PAYMENT SYSTEM
+
+Include:
+
+* amount (nullable for physical)
+* status (pending, paid)
+* reference
+* payment_type (fixed / negotiated)
+
+---
+
+## FEEDBACK SYSTEM (ENHANCED)
+
+Include:
+
+* treatment_rating
+* doctor_feedback
+* app_feedback
+* suggestions
+
+---
+
+# 🗄 DATABASE DESIGN
+
+Create tables:
+
+* users
+* bookings
+* sessions
+* payments
+* feedback
+* transfer_logs
+
+Include:
+
+* relationships
+* timestamps
+* indexing
+
+---
+
+# 🔌 SERVICE LAYER
+
+* AuthService
+* BookingService
+* SessionService
+* TransferService
+* PaymentService
+* FeedbackService
+
+---
+
+# 📦 REPOSITORIES
+
+* UserRepository
+* BookingRepository
+* SessionRepository
+* TransferRepository
+* etc.
+
+---
+
+# 🔐 SECURITY
+
+* JWT authentication
+* Role-based access
+* Protect doctor-only/admin-only endpoints
+
+---
+
+# 🌐 API DESIGN (CRITICAL)
+
+For each endpoint include:
+
+* URL
+* Method
+* Request example
+* Response example
+
+---
+
+# 📄 DOCUMENTATION
+
+Include:
+
+## 1. Architecture explanation
+
+## 2. How Flutter frontend connects (Dio/http examples)
+
+## 3. API summary table
+
+## 4. How to run locally
+
+## 5. GitHub workflow for 2 developers
+
+## 6. Future integration:
+
+* Payment gateway (Selcom)
+* Video APIs (Zoom, Meet)
+
+---
+
+# 🚨 IMPORTANT RULES
+
+* Do NOT skip features
+* Respect client requirements strictly
+* Write production-level code
+* Keep code clean and modular
+
+---
+
+# 💡 BONUS
+
+* Seed admin user
+* Error handling
+* Logging
+
+---
+
+Start generating the backend now.

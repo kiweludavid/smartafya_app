@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets (safety net — subprojects also ignore these)
+.env
+.env.local
+.env.*.local
+
+# Dependencies & build caches (safety net)
+node_modules/
+.venv/
+venv/
+.dart_tool/
+.next/
+build/
+*.db
+*.sqlite3

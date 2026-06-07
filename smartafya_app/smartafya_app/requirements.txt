@@ -1,0 +1,16 @@
+# Default dev uses SQLite (see app/core/config.py). For PostgreSQL, also install:
+#   pip install -r requirements-postgres.txt
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+sqlalchemy==2.0.30
+alembic==1.13.1
+pydantic==2.7.1
+pydantic-settings==2.2.1
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+# passlib 1.7.4 is incompatible with bcrypt 5.x (removed __about__); keep 4.x until passlib is upgraded.
+bcrypt>=4.0.1,<5
+python-multipart==0.0.9
+aiosqlite==0.20.0
+python-dotenv==1.0.1
+httpx==0.27.0

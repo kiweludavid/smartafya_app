@@ -1,0 +1,19 @@
+# Default dev uses SQLite (see app/core/config.py). For PostgreSQL, also install:
+#   pip install -r requirements-postgres.txt
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+# Use newer SQLAlchemy builds so Windows + Python 3.14 can run without hitting
+# `TypeError: Can't replace canonical symbol ... __firstlineno__`.
+sqlalchemy>=2.0.50,<3
+alembic==1.13.1
+# Use newer Pydantic builds so Windows + Python 3.14 can install without a compiler toolchain.
+pydantic>=2.13.4,<3
+pydantic-settings>=2.14.1,<3
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+# passlib 1.7.4 is incompatible with bcrypt 5.x (removed __about__); keep 4.x until passlib is upgraded.
+bcrypt>=4.0.1,<5
+python-multipart==0.0.9
+aiosqlite==0.20.0
+python-dotenv>=1.2.2,<2
+httpx==0.27.0
