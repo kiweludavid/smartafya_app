@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
 import '../utils/dio_error_message.dart';
+import '../widgets/language_picker.dart';
 import 'app_palette.dart';
 
 /// Client profile screen backed by:
@@ -267,6 +268,10 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 16),
+              _card(
+                child: const LanguagePicker(),
               ),
               const SizedBox(height: 16),
               _card(

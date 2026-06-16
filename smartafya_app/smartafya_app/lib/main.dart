@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_afya/l10n/app_localizations.dart';
 
 import 'screens/home_screen_ui.dart';
 import 'screens/login_screen.dart';
@@ -9,12 +11,16 @@ import 'screens/signup_screen.dart';
 import 'services/api_client.dart';
 import 'services/notification_service.dart';
 import 'state/client_home_controller.dart';
+import 'state/locale_controller.dart';
 
 final GlobalKey<NavigatorState> appNavigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+
+  final localeController = LocaleController();
+  await localeController.loadSaved();
 
   // Avoid "blank screens" in release when a widget throws during build/layout.
   // This surfaces the error so it can be fixed quickly.
@@ -56,20 +62,33 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: localeController),
         ChangeNotifierProvider(create: (_) => ClientHomeController()),
       ],
-      child: MaterialApp(
-        navigatorKey: appNavigatorKey,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          useMaterial3: true,
-          textTheme: GoogleFonts.interTextTheme(),
-        ),
-        initialRoute: '/login',
-        routes: {
-          '/signup': (_) => const SmartAfyaSignupScreen(),
-          '/login': (_) => const SmartAfyaLoginScreen(),
-          '/home': (_) => const SmartAfyaHomeScreenUi(),
+      child: Consumer<LocaleController>(
+        builder: (context, localeController, _) {
+          return MaterialApp(
+            navigatorKey: appNavigatorKey,
+            debugShowCheckedModeBanner: false,
+            locale: localeController.locale,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: ThemeData(
+              useMaterial3: true,
+              textTheme: GoogleFonts.interTextTheme(),
+            ),
+            initialRoute: '/login',
+            routes: {
+              '/signup': (_) => const SmartAfyaSignupScreen(),
+              '/login': (_) => const SmartAfyaLoginScreen(),
+              '/home': (_) => const SmartAfyaHomeScreenUi(),
+            },
+          );
         },
       ),
     ),

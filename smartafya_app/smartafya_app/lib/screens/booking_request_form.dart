@@ -1024,6 +1024,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
       );
       if (!mounted) return;
       await _refreshDraftPayment();
+      if (!mounted) return;
       if (_paymentReady) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Payment recorded. You can submit your booking now.')),
@@ -1094,6 +1095,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
 
   Future<void> _submit() async {
     if (!await _validateBookingForm()) return;
+    if (!mounted) return;
     if (_requiresPrePay && !_paymentReady) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Complete payment before submitting your booking.')),

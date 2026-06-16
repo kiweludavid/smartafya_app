@@ -7,6 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:smart_afya/l10n/app_localizations.dart';
+
+import '../l10n/format_helpers.dart';
+import '../l10n/l10n_extensions.dart';
 import '../services/api_service.dart';
 import '../utils/dio_error_message.dart';
 import '../utils/payment_status.dart';
@@ -38,6 +42,8 @@ const List<BoxShadow> _kShadowNav = [
   BoxShadow(color: Color(0x0A000000), blurRadius: 10, offset: Offset(0, -4)),
 ];
 
+enum _HomeLoadError { profile, timeout, general }
+
 /// Pixel-perfect home screen matching the provided design image.
 ///
 /// Note: App-wide Inter font is applied via ThemeData in `main.dart`.
@@ -65,8 +71,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
 
   bool _isLoading = true;
   bool _hasError = false;
-  // ignore: unused_field
-  String? _errorText;
+  _HomeLoadError? _loadError;
   CurrentUserDto? _user;
   SessionDto? _upcomingSession;
   BookingDto? _upcomingBooking;
@@ -102,6 +107,13 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
       );
     }
     if (_hasError) {
+      final l10n = context.l10n;
+      final errorMessage = switch (_loadError) {
+        _HomeLoadError.profile => l10n.couldNotLoadProfileRetry,
+        _HomeLoadError.timeout => l10n.homeLoadTimedOut,
+        _HomeLoadError.general => l10n.couldNotLoadHomeRetry,
+        null => l10n.couldNotLoadHomeData,
+      };
       return Scaffold(
         backgroundColor: Colors.transparent,
         body: DecoratedBox(
@@ -119,7 +131,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    (_errorText ?? 'Could not load home data.'),
+                    errorMessage,
                     textAlign: TextAlign.center,
                     style: const TextStyle(fontWeight: FontWeight.w800),
                   ),
@@ -127,7 +139,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
                   FilledButton(
                     onPressed: _load,
                     style: FilledButton.styleFrom(backgroundColor: SmartAfyaPalette.primaryBlue),
-                    child: const Text('Retry'),
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),
@@ -143,16 +155,19 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
         ? firstNameFromFullName(user.fullName)
         : null;
     final specialist = (user?.specialistType ?? '').trim();
+    final l10n = context.l10n;
     final badgeText = isDoctor
-        ? (specialist.isNotEmpty ? specialist : 'Doctor')
-        : 'Client';
+        ? (specialist.isNotEmpty ? specialist : l10n.roleDoctor)
+        : l10n.roleClient;
 
     final upcoming = _upcomingSession;
     final booking = _upcomingBooking;
     final hasUpcoming = upcoming != null;
 
-    final whenText = hasUpcoming ? _formatWhen(upcoming.scheduledAt) : null;
-    final typeLabel = _sessionTypeLabel(booking?.sessionType);
+    final whenText = hasUpcoming
+        ? formatScheduledWhenLong(context, _parseLocal(upcoming.scheduledAt))
+        : null;
+    final typeLabel = localizedSessionType(l10n, booking?.sessionType);
     final doctorLabel = _doctorLabel(upcoming?.doctorId);
     final detail2 = hasUpcoming ? _buildConsultationLine(typeLabel: typeLabel, doctorLabel: doctorLabel) : null;
 
@@ -255,10 +270,12 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
                                           const SizedBox(height: _sectionGap),
                                           HeroCard(
                                             hasUpcomingSession: hasUpcoming,
-                                            title: hasUpcoming ? 'Upcoming Session' : 'Start your care',
-                                            subtitle: hasUpcoming ? (whenText ?? '—') : 'Book your first consultation',
-                                            detailLine: hasUpcoming ? (detail2 ?? 'Consultation') : null,
-                                            primaryActionText: hasUpcoming ? 'Join Session' : 'Book Consultation',
+                                            title: hasUpcoming ? l10n.upcomingSession : l10n.startYourCare,
+                                            subtitle: hasUpcoming
+                                                ? (whenText?.isEmpty == true ? l10n.emDash : (whenText ?? l10n.emDash))
+                                                : l10n.bookFirstConsultation,
+                                            detailLine: hasUpcoming ? (detail2 ?? l10n.consultation) : null,
+                                            primaryActionText: hasUpcoming ? l10n.joinSession : l10n.bookConsultation,
                                             onPrimaryAction: hasUpcoming
                                                 ? () => _handleJoin(context, upcoming.meetingLink)
                                                 : () => Navigator.push(
@@ -270,7 +287,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
                                                         ),
                                                       ),
                                                     ),
-                                            secondaryActionText: hasUpcoming ? 'Reschedule' : null,
+                                            secondaryActionText: hasUpcoming ? l10n.reschedule : null,
                                             onSecondaryAction: hasUpcoming
                                                 ? () => Navigator.push(
                                                       context,
@@ -441,7 +458,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
     setState(() {
       _isLoading = true;
       _hasError = false;
-      _errorText = null;
+      _loadError = null;
     });
 
     late final CurrentUserDto loadedUser;
@@ -456,7 +473,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
       if (!mounted) return;
       setState(() {
         _hasError = true;
-        _errorText = 'Could not load your profile. Please retry.';
+        _loadError = _HomeLoadError.profile;
         _isLoading = false;
       });
       return;
@@ -465,7 +482,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
       if (!mounted) return;
       setState(() {
         _hasError = true;
-        _errorText = 'Home load timed out. Please retry.';
+        _loadError = _HomeLoadError.timeout;
         _isLoading = false;
       });
       return;
@@ -474,7 +491,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
       if (!mounted) return;
       setState(() {
         _hasError = true;
-        _errorText = 'Could not load home. Please retry.';
+        _loadError = _HomeLoadError.general;
         _isLoading = false;
       });
       return;
@@ -585,12 +602,13 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
         _doctorMessageThreads = 0;
       });
       if (mounted) {
+        final l10n = context.l10n;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               loadedUser.isDoctor
-                  ? 'Could not load sessions. Pull down to retry.'
-                  : 'Could not load all data. Pull down to retry.',
+                  ? l10n.couldNotLoadSessionsPullToRetry
+                  : l10n.couldNotLoadAllDataPullToRetry,
             ),
           ),
         );
@@ -701,43 +719,6 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
     return dt?.toLocal();
   }
 
-  static String? _formatWhen(String? scheduledAtIso) {
-    final dt = _parseLocal(scheduledAtIso);
-    if (dt == null) return null;
-    const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    final wd = weekdays[(dt.weekday - 1).clamp(0, 6)];
-    final day = dt.day.toString().padLeft(2, '0');
-    final mon = months[dt.month - 1];
-    final year = dt.year.toString();
-    final hour12 = (dt.hour % 12 == 0) ? 12 : dt.hour % 12;
-    final hourStr = hour12.toString().padLeft(2, '0');
-    final minStr = dt.minute.toString().padLeft(2, '0');
-    final ampm = dt.hour >= 12 ? 'PM' : 'AM';
-    return '$wd, $day $mon $year  •  $hourStr:$minStr $ampm';
-  }
-
-  static String _sessionTypeLabel(String? sessionType) {
-    final s = (sessionType ?? '').toLowerCase().trim();
-    if (s == 'video') return 'Video Consultation';
-    if (s == 'audio') return 'Audio Consultation';
-    if (s == 'physical') return 'Physical Consultation';
-    return 'Consultation';
-  }
-
   static String _doctorLabel(String? doctorId) {
     if (doctorId == null || doctorId.isEmpty) return '';
     // We only use /users/me + /sessions/ (+ bookings for session type).
@@ -758,7 +739,7 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
     if (link.isEmpty) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Session link not available yet')),
+        SnackBar(content: Text(context.l10n.sessionLinkNotAvailable)),
       );
       return;
     }
@@ -766,14 +747,14 @@ class _SmartAfyaHomeScreenUiState extends State<SmartAfyaHomeScreenUi>
     if (uri == null) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Session link not available yet')),
+        SnackBar(content: Text(context.l10n.sessionLinkNotAvailable)),
       );
       return;
     }
     final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Session link not available yet')),
+        SnackBar(content: Text(context.l10n.sessionLinkNotAvailable)),
       );
     }
   }
@@ -814,24 +795,6 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
   bool _loadingActiveChat = false;
   final Set<String> _dismissedMissedBannerSessionIds = <String>{};
 
-  String _timeGreeting(DateTime now) {
-    final h = now.hour;
-    if (h < 12) return 'Good morning';
-    if (h < 18) return 'Good afternoon';
-    return 'Good evening';
-  }
-
-  static String _formatShortWhen(String? iso) {
-    final dt = DateTime.tryParse(iso ?? '')?.toLocal();
-    if (dt == null) return 'Recently';
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    final m = months[(dt.month - 1).clamp(0, 11)];
-    final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
-    final am = dt.hour >= 12 ? 'PM' : 'AM';
-    final min = dt.minute.toString().padLeft(2, '0');
-    return '$m ${dt.day}, ${dt.year} · $hour:$min $am';
-  }
-
   Future<void> _ensureActiveChatLoaded(String sessionId) async {
     if (_loadingActiveChat) return;
     if ((_activeConversationId ?? '').isNotEmpty) return;
@@ -852,9 +815,12 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final now = DateTime.now();
-    final greeting = _timeGreeting(now);
-    final firstName = (widget.greetingFirstName ?? '').trim().isEmpty ? 'there' : widget.greetingFirstName!.trim();
+    final greeting = timeGreeting(l10n, now);
+    final firstName = (widget.greetingFirstName ?? '').trim().isEmpty
+        ? l10n.greetingThere
+        : widget.greetingFirstName!.trim();
 
     Widget cardShell({required Widget child, VoidCallback? onTap}) {
       final decoration = BoxDecoration(
@@ -910,12 +876,12 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(s.errorMessage!, textAlign: TextAlign.center),
+                  Text(l10n.couldNotLoadHomeDataPullToRetry, textAlign: TextAlign.center),
                   const SizedBox(height: 12),
                   FilledButton(
                     onPressed: c.load,
                     style: FilledButton.styleFrom(backgroundColor: SmartAfyaPalette.primaryBlue),
-                    child: const Text('Retry'),
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),
@@ -977,7 +943,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '$greeting, $firstName 👋',
+                    l10n.greetingWithName(greeting, firstName),
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
@@ -986,9 +952,9 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  const Text(
-                    'Here\u2019s everything for your care today.',
-                    style: TextStyle(color: SmartAfyaPalette.mutedText, fontWeight: FontWeight.w700),
+                  Text(
+                    l10n.careTodaySummary,
+                    style: const TextStyle(color: SmartAfyaPalette.mutedText, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
@@ -1013,8 +979,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'You have a session credit of ${credit.toStringAsFixed(2)} from a first missed visit. '
-                          'It will apply toward your next eligible paid session.',
+                          l10n.sessionCreditBanner(credit.toStringAsFixed(2)),
                           style: const TextStyle(
                             fontWeight: FontWeight.w700,
                             color: SmartAfyaPalette.deepText,
@@ -1057,9 +1022,9 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'You missed a session',
-                                    style: TextStyle(
+                                  Text(
+                                    l10n.youMissedSession,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.w900,
                                       fontSize: 16,
                                       color: SmartAfyaPalette.deepText,
@@ -1067,7 +1032,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    _formatShortWhen(missed.scheduledAt),
+                                    formatShortWhen(context, missed.scheduledAt),
                                     style: const TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: SmartAfyaPalette.mutedText,
@@ -1077,7 +1042,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                                       (doctorsById[missed.doctorId!]?.fullName ?? '').trim().isNotEmpty) ...[
                                     const SizedBox(height: 4),
                                     Text(
-                                      'With ${doctorsById[missed.doctorId!]!.fullName.trim()}',
+                                      l10n.withDoctor(doctorsById[missed.doctorId!]!.fullName.trim()),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w700,
                                         color: SmartAfyaPalette.mutedText,
@@ -1092,7 +1057,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                                 setState(() => _dismissedMissedBannerSessionIds.add(missed.id));
                               },
                               icon: const Icon(Icons.close_rounded, color: SmartAfyaPalette.mutedText),
-                              tooltip: 'Dismiss',
+                              tooltip: l10n.dismiss,
                             ),
                           ],
                         ),
@@ -1117,7 +1082,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                                   side: BorderSide(color: SmartAfyaPalette.primaryBlue.withValues(alpha: 0.45)),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 ),
-                                child: const Text('Reschedule', style: TextStyle(fontWeight: FontWeight.w900)),
+                                child: Text(l10n.reschedule, style: const TextStyle(fontWeight: FontWeight.w900)),
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -1133,7 +1098,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                                   backgroundColor: SmartAfyaPalette.primaryBlue,
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 ),
-                                child: const Text('Get help', style: TextStyle(fontWeight: FontWeight.w900)),
+                                child: Text(l10n.getHelp, style: const TextStyle(fontWeight: FontWeight.w900)),
                               ),
                             ),
                           ],
@@ -1168,7 +1133,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                           : null,
                       payment: paymentsBySessionId[upcomingSessions[i].id],
                       positionLabel: upcomingSessions.length > 1
-                          ? 'Session ${i + 1} of ${upcomingSessions.length}'
+                          ? l10n.sessionPosition(i + 1, upcomingSessions.length)
                           : null,
                       onJoin: () => widget.onJoin(upcomingSessions[i].meetingLink),
                       onViewDetails: () => openSessionDetail(upcomingSessions[i]),
@@ -1215,9 +1180,9 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
                   ),
-                  child: const Text(
-                    'Start New Consultation',
-                    style: TextStyle(fontWeight: FontWeight.w900, fontSize: 15.5, letterSpacing: -0.1),
+                  child: Text(
+                    l10n.startNewConsultation,
+                    style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 15.5, letterSpacing: -0.1),
                   ),
                 ),
               ),
@@ -1230,12 +1195,12 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  sectionLabel('Quick actions'),
+                  sectionLabel(l10n.quickActionsLower),
                   _TwoGrid(
                     left: _ActionTile(
                       icon: Icons.calendar_month_rounded,
-                      title: 'Book Consultation',
-                      subtitle: 'Start a new session',
+                      title: l10n.bookConsultation,
+                      subtitle: l10n.bookConsultationSubtitle,
                       onTap: () => Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(
@@ -1248,8 +1213,8 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                     ),
                     right: _ActionTile(
                       icon: Icons.event_note_rounded,
-                      title: 'My Appointments',
-                      subtitle: 'View schedule',
+                      title: l10n.myAppointments,
+                      subtitle: l10n.viewSchedule,
                       onTap: () => Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(builder: (_) => const AppointmentsScreen()),
@@ -1267,12 +1232,12 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  sectionLabel('More'),
+                  sectionLabel(l10n.more),
                   _TwoGrid(
                     left: _ActionTile(
                       icon: Icons.chat_rounded,
-                      title: 'Chat',
-                      subtitle: 'Your conversations',
+                      title: l10n.navChat,
+                      subtitle: l10n.chatSubtitle,
                       onTap: () => Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(builder: (_) => const ChatListScreen()),
@@ -1280,8 +1245,8 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                     ),
                     right: _ActionTile(
                       icon: Icons.folder_shared_rounded,
-                      title: 'Medical Records',
-                      subtitle: 'Your history',
+                      title: l10n.medicalRecords,
+                      subtitle: l10n.yourHistory,
                       onTap: () => Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(builder: (_) => const ClientMedicalRecordsScreen()),
@@ -1309,16 +1274,18 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                         child: const Icon(Icons.forum_rounded, color: _indigo),
                       ),
                       const SizedBox(width: 12),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Continue Conversation',
-                                style: TextStyle(fontWeight: FontWeight.w900, color: SmartAfyaPalette.deepText)),
-                            SizedBox(height: 4),
                             Text(
-                              'Chat with your specialist',
-                              style: TextStyle(color: SmartAfyaPalette.mutedText, fontWeight: FontWeight.w700),
+                              l10n.continueConversation,
+                              style: const TextStyle(fontWeight: FontWeight.w900, color: SmartAfyaPalette.deepText),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              l10n.chatWithSpecialist,
+                              style: const TextStyle(color: SmartAfyaPalette.mutedText, fontWeight: FontWeight.w700),
                             ),
                           ],
                         ),
@@ -1332,7 +1299,7 @@ class _ClientHomeDynamicState extends State<_ClientHomeDynamic> {
                           backgroundColor: _indigo,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                         ),
-                        child: const Text('Open', style: TextStyle(fontWeight: FontWeight.w900)),
+                        child: Text(l10n.open, style: const TextStyle(fontWeight: FontWeight.w900)),
                       ),
                     ],
                   ),
@@ -1524,58 +1491,37 @@ class _UpcomingSessionCardBody extends StatelessWidget {
     return diff.inMinutes <= 30 && diff.inMinutes >= -120;
   }
 
-  static String _sessionTypeLabel(String? type) {
-    final s = (type ?? '').toLowerCase().trim();
-    if (s == 'video') return 'Online consultation';
-    if (s == 'audio') return 'Audio consultation';
-    if (s == 'physical') return 'In-person visit';
-    if (s == 'online') return 'Online consultation';
-    return 'Consultation';
-  }
-
-  /// Combined "12 May • 2:30 PM" formatter — the value shown in the
-  /// Date & Time cell. Returns "TBD" when scheduledAt is missing.
-  static String _dateTimeLabel(DateTime? dt) {
-    if (dt == null) return 'TBD';
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    final hour12 = (dt.hour % 12 == 0) ? 12 : dt.hour % 12;
-    final minStr = dt.minute.toString().padLeft(2, '0');
-    final ampm = dt.hour >= 12 ? 'PM' : 'AM';
-    return '${dt.day} ${months[dt.month - 1]} \u2022 $hour12:$minStr $ampm';
-  }
-
   /// Picks the single supportive sentence shown above the action buttons.
   /// Returns `null` when there's nothing notable to say so the support tile
   /// is hidden entirely (the Join Now button conveys readiness on its own).
   ({String text, IconData icon})? _support({
+    required AppLocalizations l10n,
     required DateTime? dt,
     required bool doctorAssigned,
   }) {
     if (!doctorAssigned) {
       return (
-        text: 'Waiting for specialist confirmation.',
+        text: l10n.waitingForSpecialist,
         icon: Icons.schedule_rounded,
       );
     }
     if (_paymentInReview) {
       return (
-        text: "Verifying your payment \u2014 we\u2019ll notify you shortly.",
+        text: l10n.verifyingPayment,
         icon: Icons.hourglass_top_rounded,
       );
     }
     if (dt != null) {
       final diff = dt.difference(DateTime.now());
       if (diff.inMinutes > 0 && diff.inMinutes <= 30) {
-        final m = diff.inMinutes;
         return (
-          text: 'Your session starts in $m minute${m == 1 ? '' : 's'}.',
+          text: l10n.sessionStartsInMinutes(diff.inMinutes),
           icon: Icons.notifications_active_outlined,
         );
       }
       if (diff.inHours > 0 && diff.inHours <= 24) {
-        final h = diff.inHours;
         return (
-          text: 'Your session starts in $h hour${h == 1 ? '' : 's'}.',
+          text: l10n.sessionStartsInHours(diff.inHours),
           icon: Icons.notifications_none_rounded,
         );
       }
@@ -1585,17 +1531,18 @@ class _UpcomingSessionCardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final dt = _SmartAfyaHomeScreenUiState._parseLocal(session.scheduledAt);
     final doctorAssigned = (session.doctorId ?? '').trim().isNotEmpty;
     final joinable = _isJoinable();
-    final typeLabel = _sessionTypeLabel(booking?.sessionType);
-    final statusInfo = _statusInfo();
-    final support = _support(dt: dt, doctorAssigned: doctorAssigned);
+    final typeLabel = localizedSessionType(l10n, booking?.sessionType, compact: true);
+    final statusInfo = _statusInfo(l10n);
+    final support = _support(l10n: l10n, dt: dt, doctorAssigned: doctorAssigned);
 
     final specialistName = (doctor?.fullName.trim().isNotEmpty == true)
         ? doctor!.fullName.trim()
-        : (doctorAssigned ? 'Specialist assigned' : 'Awaiting match');
-    final specialtyLabel = doctor?.specialistLabel ?? 'Mental health specialist';
+        : (doctorAssigned ? l10n.specialistAssigned : l10n.awaitingMatch);
+    final specialtyLabel = doctor?.specialistLabel ?? l10n.mentalHealthSpecialist;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1604,10 +1551,10 @@ class _UpcomingSessionCardBody extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Expanded(
+            Expanded(
               child: Text(
-                'Upcoming Session',
-                style: TextStyle(
+                l10n.upcomingSession,
+                style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   color: SmartAfyaPalette.deepText,
                   fontSize: 16,
@@ -1635,18 +1582,18 @@ class _UpcomingSessionCardBody extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _InfoCell(label: 'Doctor', value: specialistName)),
+            Expanded(child: _InfoCell(label: l10n.doctorLabel, value: specialistName)),
             const SizedBox(width: 14),
-            Expanded(child: _InfoCell(label: 'Specialty', value: specialtyLabel)),
+            Expanded(child: _InfoCell(label: l10n.specialtyLabel, value: specialtyLabel)),
           ],
         ),
         const SizedBox(height: 14),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _InfoCell(label: 'Session', value: typeLabel)),
+            Expanded(child: _InfoCell(label: l10n.sessionLabel, value: typeLabel)),
             const SizedBox(width: 14),
-            Expanded(child: _InfoCell(label: 'Date & Time', value: _dateTimeLabel(dt))),
+            Expanded(child: _InfoCell(label: l10n.dateTimeLabel, value: formatScheduledDateTime(context, dt))),
           ],
         ),
 
@@ -1668,14 +1615,14 @@ class _UpcomingSessionCardBody extends StatelessWidget {
           children: [
             Expanded(
               child: _SecondaryCardButton(
-                label: 'View Details',
+                label: l10n.viewDetails,
                 onPressed: onViewDetails,
               ),
             ),
             const SizedBox(width: 10),
             Expanded(
               child: _PrimaryCardButton(
-                label: 'Join Now',
+                label: l10n.joinNow,
                 icon: Icons.video_call_rounded,
                 onPressed: joinable ? onJoin : null,
               ),
@@ -1688,21 +1635,21 @@ class _UpcomingSessionCardBody extends StatelessWidget {
 
   /// Maps internal session/payment state to badge styles: Completed (blue),
   /// Confirmed (green), In Review (blue), Pending (amber).
-  ({String label, Color color}) _statusInfo() {
+  ({String label, Color color}) _statusInfo(AppLocalizations l10n) {
     final sessionStatus = session.status.toLowerCase().trim();
     if (sessionStatus == 'completed') {
-      return (label: 'Completed', color: SmartAfyaPalette.primaryBlue);
+      return (label: l10n.statusCompleted, color: SmartAfyaPalette.primaryBlue);
     }
     if (_paymentCompleted) {
-      return (label: 'Confirmed', color: SmartAfyaPalette.primaryGreen);
+      return (label: l10n.statusConfirmed, color: SmartAfyaPalette.primaryGreen);
     }
     if (_paymentInReview) {
-      return (label: 'In Review', color: SmartAfyaPalette.primaryBlue);
+      return (label: l10n.statusInReview, color: SmartAfyaPalette.primaryBlue);
     }
     if (_awaitingPayment) {
-      return (label: 'Awaiting Payment', color: const Color(0xFFE07A1F));
+      return (label: l10n.statusAwaitingPayment, color: const Color(0xFFE07A1F));
     }
-    return (label: 'Pending', color: const Color(0xFFD08600));
+    return (label: l10n.statusPending, color: const Color(0xFFD08600));
   }
 }
 
@@ -1887,23 +1834,23 @@ class _UpcomingSessionEmptyCardBody extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 14),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'No upcoming appointments',
-                style: TextStyle(
+                context.l10n.noUpcomingAppointments,
+                style: const TextStyle(
                   fontWeight: FontWeight.w900,
                   color: SmartAfyaPalette.deepText,
                   fontSize: 15.5,
                   letterSpacing: -0.1,
                 ),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               Text(
-                'Book a consultation to get started.',
-                style: TextStyle(
+                context.l10n.bookConsultationToStart,
+                style: const TextStyle(
                   color: SmartAfyaPalette.mutedText,
                   fontWeight: FontWeight.w700,
                   fontSize: 12.5,
@@ -1967,8 +1914,9 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final first = (greetingFirstName ?? '').trim();
-    final greeting = first.isEmpty ? 'Hello' : 'Hello, $first';
+    final greeting = first.isEmpty ? l10n.hello : l10n.helloName(first);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -2013,7 +1961,7 @@ class _Header extends StatelessWidget {
                 ),
               ),
               Text(
-                badgeIsDoctor ? 'Thank you for supporting clients today.' : 'How are you feeling today?',
+                badgeIsDoctor ? l10n.doctorThankYou : l10n.howAreYouFeeling,
                 style: const TextStyle(
                   fontSize: 14.5,
                   fontWeight: FontWeight.w500,
@@ -2221,11 +2169,12 @@ class QuickActionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final cards = <Widget>[
       Expanded(
         child: ActionCard(
-          title: 'Book Consultation',
-          subtitle: 'Schedule with a specialist',
+          title: l10n.bookConsultation,
+          subtitle: l10n.scheduleWithSpecialist,
           icon: Icons.calendar_month_rounded,
           iconBg: const Color(0xFFDAE9F5),
           iconColor: const Color(0xFF1A5FA8),
@@ -2235,8 +2184,8 @@ class QuickActionsRow extends StatelessWidget {
       const SizedBox(width: 12),
       Expanded(
         child: ActionCard(
-          title: 'My Appointments',
-          subtitle: 'View & manage',
+          title: l10n.myAppointments,
+          subtitle: l10n.viewAndManage,
           icon: Icons.calendar_today_rounded,
           iconBg: const Color(0xFFDAE9F5),
           iconColor: const Color(0xFF1A5FA8),
@@ -2247,8 +2196,8 @@ class QuickActionsRow extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: ActionCard(
-            title: 'Join Session',
-            subtitle: 'Open session link',
+            title: l10n.joinSession,
+            subtitle: l10n.joinSessionSubtitle,
             icon: Icons.videocam_rounded,
             iconBg: const Color(0xFFC9EFE4),
             iconColor: const Color(0xFF2E9E72),
@@ -2261,9 +2210,9 @@ class QuickActionsRow extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Quick Actions',
-          style: TextStyle(
+        Text(
+          l10n.quickActions,
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w900,
             color: SmartAfyaPalette.deepText,
@@ -2426,26 +2375,26 @@ class _BottomNavBar extends StatelessWidget {
             selectedIndex: currentIndex,
             onDestinationSelected: onTap,
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-            destinations: const [
+            destinations: [
               NavigationDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home_rounded),
-                label: 'Home',
+                icon: const Icon(Icons.home_outlined),
+                selectedIcon: const Icon(Icons.home_rounded),
+                label: context.l10n.navHome,
               ),
               NavigationDestination(
-                icon: Icon(Icons.chat_bubble_outline_rounded),
-                selectedIcon: Icon(Icons.chat_rounded),
-                label: 'Chat',
+                icon: const Icon(Icons.chat_bubble_outline_rounded),
+                selectedIcon: const Icon(Icons.chat_rounded),
+                label: context.l10n.navChat,
               ),
               NavigationDestination(
-                icon: Icon(Icons.calendar_today_outlined),
-                selectedIcon: Icon(Icons.calendar_today_rounded),
-                label: 'Appointments',
+                icon: const Icon(Icons.calendar_today_outlined),
+                selectedIcon: const Icon(Icons.calendar_today_rounded),
+                label: context.l10n.navAppointments,
               ),
               NavigationDestination(
-                icon: Icon(Icons.person_outline),
-                selectedIcon: Icon(Icons.person_rounded),
-                label: 'Profile',
+                icon: const Icon(Icons.person_outline),
+                selectedIcon: const Icon(Icons.person_rounded),
+                label: context.l10n.navProfile,
               ),
             ],
           ),
@@ -2483,7 +2432,8 @@ class ProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = 'Setup your care ($completed/$total completed)';
+    final l10n = context.l10n;
+    final title = l10n.setupYourCare(completed, total);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -2508,17 +2458,17 @@ class ProgressCard extends StatelessWidget {
           const SizedBox(height: 12),
           _ChecklistRow(
             done: steps.hasSubmittedForm,
-            title: 'Fill health form',
+            title: l10n.fillHealthForm,
           ),
           const SizedBox(height: 10),
           _ChecklistRow(
             done: steps.hasBookedSession,
-            title: 'Book session',
+            title: l10n.bookSession,
           ),
           const SizedBox(height: 10),
           _ChecklistRow(
             done: steps.hasMadePayment,
-            title: 'Make payment',
+            title: l10n.makePayment,
           ),
           const SizedBox(height: 14),
           FilledButton(
@@ -2529,7 +2479,7 @@ class ProgressCard extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: const Text('Continue', style: TextStyle(fontWeight: FontWeight.w900)),
+            child: Text(l10n.continueAction, style: const TextStyle(fontWeight: FontWeight.w900)),
           ),
         ],
       ),

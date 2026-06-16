@@ -1,0 +1,166 @@
+{
+  "@@locale": "en",
+
+  "languageTitle": "Language",
+  "languageSystem": "System default",
+  "languageEnglish": "English",
+  "languageSwahili": "Kiswahili",
+
+  "somethingWentWrong": "Something went wrong",
+
+  "loginSubtitle": "Your Mental Health Matters",
+  "email": "Email",
+  "emailHelper": "Use your account email",
+  "pleaseEnterEmail": "Please enter your email.",
+  "enterValidEmail": "Enter a valid email address.",
+  "password": "Password",
+  "passwordHelper": "At least 8 characters",
+  "pleaseEnterPassword": "Please enter your password.",
+  "passwordMinLength": "Password must be at least 8 characters.",
+  "forgotPassword": "Forgot Password?",
+  "login": "Login",
+  "dontHaveAccount": "Don't have an account? ",
+  "signUp": "Sign Up",
+  "loginFailed": "Login failed. Please try again.",
+
+  "retry": "Retry",
+  "continueAction": "Continue",
+  "open": "Open",
+  "dismiss": "Dismiss",
+  "reschedule": "Reschedule",
+
+  "navHome": "Home",
+  "navChat": "Chat",
+  "navAppointments": "Appointments",
+  "navProfile": "Profile",
+
+  "roleClient": "Client",
+  "roleDoctor": "Doctor",
+
+  "couldNotLoadHomeData": "Could not load home data.",
+  "couldNotLoadProfileRetry": "Could not load your profile. Please retry.",
+  "homeLoadTimedOut": "Home load timed out. Please retry.",
+  "couldNotLoadHomeRetry": "Could not load home. Please retry.",
+  "couldNotLoadSessionsPullToRetry": "Could not load sessions. Pull down to retry.",
+  "couldNotLoadAllDataPullToRetry": "Could not load all data. Pull down to retry.",
+  "couldNotLoadHomeDataPullToRetry": "Could not load your home data. Pull to retry.",
+  "sessionLinkNotAvailable": "Session link not available yet",
+
+  "goodMorning": "Good morning",
+  "goodAfternoon": "Good afternoon",
+  "goodEvening": "Good evening",
+  "greetingThere": "there",
+  "greetingWithName": "{greeting}, {name} 👋",
+  "@greetingWithName": {
+    "placeholders": {
+      "greeting": { "type": "String" },
+      "name": { "type": "String" }
+    }
+  },
+  "careTodaySummary": "Here's everything for your care today.",
+  "hello": "Hello",
+  "helloName": "Hello, {name}",
+  "@helloName": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "doctorThankYou": "Thank you for supporting clients today.",
+  "howAreYouFeeling": "How are you feeling today?",
+
+  "upcomingSession": "Upcoming Session",
+  "startYourCare": "Start your care",
+  "bookFirstConsultation": "Book your first consultation",
+  "consultation": "Consultation",
+  "joinSession": "Join Session",
+  "bookConsultation": "Book Consultation",
+  "videoConsultation": "Video Consultation",
+  "audioConsultation": "Audio Consultation",
+  "physicalConsultation": "Physical Consultation",
+  "onlineConsultation": "Online consultation",
+  "audioConsultationLower": "Audio consultation",
+  "inPersonVisit": "In-person visit",
+
+  "setupYourCare": "Setup your care ({completed}/{total} completed)",
+  "@setupYourCare": {
+    "placeholders": {
+      "completed": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "fillHealthForm": "Fill health form",
+  "bookSession": "Book session",
+  "makePayment": "Make payment",
+
+  "quickActions": "Quick Actions",
+  "quickActionsLower": "Quick actions",
+  "more": "More",
+  "bookConsultationSubtitle": "Start a new session",
+  "myAppointments": "My Appointments",
+  "viewSchedule": "View schedule",
+  "scheduleWithSpecialist": "Schedule with a specialist",
+  "viewAndManage": "View & manage",
+  "joinSessionSubtitle": "Open session link",
+  "chatSubtitle": "Your conversations",
+  "medicalRecords": "Medical Records",
+  "yourHistory": "Your history",
+
+  "sessionCreditBanner": "You have a session credit of {amount} from a first missed visit. It will apply toward your next eligible paid session.",
+  "@sessionCreditBanner": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "youMissedSession": "You missed a session",
+  "withDoctor": "With {name}",
+  "@withDoctor": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "getHelp": "Get help",
+  "sessionPosition": "Session {current} of {total}",
+  "@sessionPosition": {
+    "placeholders": {
+      "current": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "startNewConsultation": "Start New Consultation",
+  "noUpcomingAppointments": "No upcoming appointments",
+  "bookConsultationToStart": "Book a consultation to get started.",
+  "continueConversation": "Continue Conversation",
+  "chatWithSpecialist": "Chat with your specialist",
+  "recently": "Recently",
+
+  "doctorLabel": "Doctor",
+  "specialtyLabel": "Specialty",
+  "sessionLabel": "Session",
+  "dateTimeLabel": "Date & Time",
+  "viewDetails": "View Details",
+  "joinNow": "Join Now",
+  "specialistAssigned": "Specialist assigned",
+  "awaitingMatch": "Awaiting match",
+  "mentalHealthSpecialist": "Mental health specialist",
+  "waitingForSpecialist": "Waiting for specialist confirmation.",
+  "verifyingPayment": "Verifying your payment — we'll notify you shortly.",
+  "sessionStartsInMinutes": "Your session starts in {count, plural, =1{1 minute} other{{count} minutes}}.",
+  "@sessionStartsInMinutes": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "sessionStartsInHours": "Your session starts in {count, plural, =1{1 hour} other{{count} hours}}.",
+  "@sessionStartsInHours": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "statusCompleted": "Completed",
+  "statusConfirmed": "Confirmed",
+  "statusInReview": "In Review",
+  "statusAwaitingPayment": "Awaiting Payment",
+  "statusPending": "Pending",
+  "tbd": "TBD",
+  "emDash": "—"
+}

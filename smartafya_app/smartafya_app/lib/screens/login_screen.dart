@@ -3,8 +3,10 @@ import 'package:dio/dio.dart';
 
 import 'app_palette.dart';
 import 'auth_widgets.dart';
+import '../l10n/l10n_extensions.dart';
 import '../services/auth_service.dart';
 import '../utils/dio_error_message.dart';
+import '../widgets/language_picker.dart';
 
 class SmartAfyaLoginScreen extends StatefulWidget {
   const SmartAfyaLoginScreen({super.key});
@@ -42,14 +44,14 @@ class _SmartAfyaLoginScreenState extends State<SmartAfyaLoginScreen> {
       Navigator.pushReplacementNamed(context, '/home', arguments: email);
     } on DioException catch (e) {
       if (!mounted) return;
-      final message = messageFromDioException(e) ?? 'Login failed. Please try again.';
+      final message = messageFromDioException(e) ?? context.l10n.loginFailed;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Login failed. Please try again.')),
+        SnackBar(content: Text(context.l10n.loginFailed)),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -58,8 +60,9 @@ class _SmartAfyaLoginScreenState extends State<SmartAfyaLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return AuthPageScaffold(
-      subtitle: 'Your Mental Health Matters',
+      subtitle: l10n.loginSubtitle,
       child: AuthCard(
         child: Form(
           key: _formKey,
@@ -67,18 +70,20 @@ class _SmartAfyaLoginScreenState extends State<SmartAfyaLoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const LanguagePicker(compact: true),
+              const SizedBox(height: 8),
               SmartAfyaInputField(
                 controller: _emailController,
-                hint: 'Email',
-                helperText: 'Use your account email',
+                hint: l10n.email,
+                helperText: l10n.emailHelper,
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   final v = value?.trim() ?? '';
-                  if (v.isEmpty) return 'Please enter your email.';
+                  if (v.isEmpty) return l10n.pleaseEnterEmail;
                   if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) {
-                    return 'Enter a valid email address.';
+                    return l10n.enterValidEmail;
                   }
                   return null;
                 },
@@ -86,8 +91,8 @@ class _SmartAfyaLoginScreenState extends State<SmartAfyaLoginScreen> {
               const SizedBox(height: 12),
               SmartAfyaInputField(
                 controller: _passwordController,
-                hint: 'Password',
-                helperText: 'At least 8 characters',
+                hint: l10n.password,
+                helperText: l10n.passwordHelper,
                 icon: Icons.lock_outline,
                 obscureText: _obscurePassword,
                 textInputAction: TextInputAction.done,
@@ -100,8 +105,8 @@ class _SmartAfyaLoginScreenState extends State<SmartAfyaLoginScreen> {
                 ),
                 validator: (value) {
                   final v = value ?? '';
-                  if (v.isEmpty) return 'Please enter your password.';
-                  if (v.length < 8) return 'Password must be at least 8 characters.';
+                  if (v.isEmpty) return l10n.pleaseEnterPassword;
+                  if (v.length < 8) return l10n.passwordMinLength;
                   return null;
                 },
               ),
@@ -110,19 +115,19 @@ class _SmartAfyaLoginScreenState extends State<SmartAfyaLoginScreen> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
-                  child: const Text('Forgot Password?'),
+                  child: Text(l10n.forgotPassword),
                 ),
               ),
               const SizedBox(height: 8),
               PrimaryActionButton(
-                label: 'Login',
+                label: l10n.login,
                 isLoading: _isLoading,
                 onPressed: _onLoginPressed,
               ),
               const SizedBox(height: 14),
               BottomAuthLink(
-                prefix: "Don't have an account? ",
-                action: 'Sign Up',
+                prefix: l10n.dontHaveAccount,
+                action: l10n.signUp,
                 onTap: () => Navigator.pushReplacementNamed(context, '/signup'),
               ),
             ],
