@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../l10n/l10n_extensions.dart';
 import '../services/api_service.dart';
 import '../services/notification_service.dart';
 import '../utils/booking_session_lookup.dart';
@@ -165,18 +166,16 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Terms & Conditions', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                Text(context.l10n.termsAndConditions, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 10),
-                const Text(
-                  'By submitting this form, you confirm that the information you provide is accurate to the best of your knowledge. '
-                  'Your responses may be reviewed by your assigned care team to help prepare for your session. '
-                  'If you are experiencing an emergency, contact local emergency services immediately.',
-                  style: TextStyle(color: SmartAfyaPalette.mutedText, height: 1.45),
+                Text(
+                  context.l10n.termsBody,
+                  style: const TextStyle(color: SmartAfyaPalette.mutedText, height: 1.45),
                 ),
                 const SizedBox(height: 16),
                 if (_consentTimestampUtc != null)
                   Text(
-                    'Last accepted: ${_consentTimestampUtc!.toLocal().toString()}',
+                    context.l10n.lastAccepted(_consentTimestampUtc!.toLocal().toString()),
                     style: const TextStyle(color: SmartAfyaPalette.mutedText, fontSize: 12),
                   ),
                 const SizedBox(height: 16),
@@ -188,7 +187,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
                       _setConsent(true);
                     },
                     style: FilledButton.styleFrom(backgroundColor: SmartAfyaPalette.primaryBlue),
-                    child: const Text('Accept Terms & Continue'),
+                    child: Text(context.l10n.acceptTermsContinue),
                   ),
                 ),
               ],
@@ -226,14 +225,14 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Complete the details below. Your answers help us match you and prepare for your session.',
+            context.l10n.bookingIntro,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: SmartAfyaPalette.mutedText,
                   height: 1.45,
                 ),
           ),
           const SizedBox(height: 18),
-          _sectionTitle('Terms & Conditions'),
+          _sectionTitle(context.l10n.termsAndConditions),
           const SizedBox(height: 8),
           CheckboxListTile(
             value: _consent,
@@ -257,14 +256,14 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
             alignment: Alignment.centerLeft,
             child: TextButton(
               onPressed: _showTermsAndConditions,
-              child: const Text('View Terms & Conditions'),
+              child: Text(context.l10n.viewTerms),
             ),
           ),
           if (!_termsAccepted)
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
-                'Accept the Terms & Conditions above to enable submission.',
+                context.l10n.acceptTermsToEnableSubmission,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: SmartAfyaPalette.mutedText,
                       fontWeight: FontWeight.w600,
@@ -273,7 +272,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
             ),
           if (widget.requireAvailabilityConfirmation) ...[
             const SizedBox(height: 18),
-            _sectionTitle('Availability confirmation'),
+            _sectionTitle(context.l10n.availabilityConfirmation),
             const SizedBox(height: 8),
             CheckboxListTile(
               value: _availabilityConfirmed,
@@ -282,7 +281,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
               contentPadding: EdgeInsets.zero,
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(
-                'I confirm I can attend at the selected times.',
+                context.l10n.confirmAttendSelectedTimes,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: SmartAfyaPalette.deepText,
                       height: 1.35,
@@ -293,7 +292,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(
-                  'Confirm availability to enable submission.',
+                  context.l10n.confirmAvailabilityToEnable,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: SmartAfyaPalette.mutedText,
                         fontWeight: FontWeight.w600,
@@ -302,7 +301,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
               ),
           ],
           const SizedBox(height: 18),
-          _sectionTitle('State of mind'),
+          _sectionTitle(context.l10n.stateOfMind),
           const SizedBox(height: 10),
           TextFormField(
             controller: _descriptionController,
@@ -311,7 +310,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
             keyboardType: TextInputType.multiline,
             textInputAction: TextInputAction.newline,
             decoration: InputDecoration(
-              hintText: 'Describe your current concerns',
+              hintText: context.l10n.describeCurrentConcerns,
               filled: true,
               fillColor: SmartAfyaPalette.softBlue,
               prefixIcon: const Icon(Icons.edit_note_outlined, color: SmartAfyaPalette.primaryBlue),
@@ -324,29 +323,28 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
             ),
             validator: (v) {
               final text = (v ?? '').trim();
-              if (text.length < 10) return 'Please add more detail (at least a short paragraph).';
+              if (text.length < 10) return context.l10n.pleaseAddMoreDetail;
               return null;
             },
           ),
           const SizedBox(height: 18),
-          _sectionTitle('Who should attend you?'),
+          _sectionTitle(context.l10n.whoShouldAttendYou),
           const SizedBox(height: 6),
-          const Text(
-            'Pick a specific psychologist, psychiatrist, therapist, faith leader, or even a known mental-health '
-            'influencer. Don\u2019t see your person? Use \u201CSpecial arrangement\u201D inside the picker.',
-            style: TextStyle(color: SmartAfyaPalette.mutedText, height: 1.35, fontSize: 13, fontWeight: FontWeight.w600),
+          Text(
+            context.l10n.whoShouldAttendHelp,
+            style: const TextStyle(color: SmartAfyaPalette.mutedText, height: 1.35, fontSize: 13, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 10),
           _practitionerPickerSection(),
           const SizedBox(height: 18),
-          _sectionTitle('Session type'),
+          _sectionTitle(context.l10n.sessionType),
           const SizedBox(height: 10),
           _segmented<String>(
             value: _sessionType,
-            items: const [
-              ('audio', 'Audio'),
-              ('video', 'Video'),
-              ('physical', 'Physical'),
+            items: [
+              ('audio', context.l10n.audio),
+              ('video', context.l10n.video),
+              ('physical', context.l10n.physical),
             ],
             onChanged: widget.sessionTypeLocked ? null : (v) => setState(() => _sessionType = v),
           ),
@@ -846,18 +844,18 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
 
   String _priceHint({required String sessionType, required int durationMinutes}) {
     final base = durationMinutes == 30 ? 'TZS 20,000' : 'TZS 30,000';
-    if (sessionType == 'physical') return 'Physical session price is negotiable (admin + client).';
-    return 'Estimated price: $base';
+    if (sessionType == 'physical') return context.l10n.physicalPriceNegotiable;
+    return base;
   }
 
   String _submitButtonLabel() {
-    if (!_termsAccepted) return 'Accept Terms to submit';
+    if (!_termsAccepted) return context.l10n.acceptTermsToSubmit;
     if (widget.requireAvailabilityConfirmation && !_availabilityConfirmed) {
-      return 'Confirm availability to submit';
+      return context.l10n.confirmAvailabilityToSubmit;
     }
-    if (!_datesReady) return 'Add 3 preferred dates to continue';
-    if (_requiresPrePay && !_paymentReady) return 'Complete payment to submit';
-    return 'Submit booking';
+    if (!_datesReady) return context.l10n.add3PreferredDatesToContinue;
+    if (_requiresPrePay && !_paymentReady) return context.l10n.completePaymentToSubmit;
+    return context.l10n.submitBooking;
   }
 
   Widget _paymentBeforeSubmitCard() {
@@ -888,7 +886,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  paid ? 'Payment received' : 'Payment required',
+                  paid ? context.l10n.paymentReceived : context.l10n.paymentRequired,
                   style: const TextStyle(fontWeight: FontWeight.w900, color: SmartAfyaPalette.deepText),
                 ),
               ),
@@ -897,9 +895,8 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
           const SizedBox(height: 8),
           Text(
             paid
-                ? 'You can submit your booking request now. Admin will confirm and schedule.'
-                : 'Pay ${_priceHint(sessionType: _sessionType, durationMinutes: _durationMinutes).replaceFirst('Estimated price: ', '')} before submitting. '
-                    'Upload proof or complete mobile money / bank transfer.',
+                ? context.l10n.canSubmitBookingNow
+                : context.l10n.payBeforeSubmitting(_priceHint(sessionType: _sessionType, durationMinutes: _durationMinutes)),
             style: const TextStyle(color: SmartAfyaPalette.mutedText, fontWeight: FontWeight.w600, height: 1.35),
           ),
           if (!paid) ...[
@@ -911,7 +908,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               icon: const Icon(Icons.payments_rounded),
-              label: const Text('Pay now', style: TextStyle(fontWeight: FontWeight.w900)),
+              label: Text(context.l10n.payNow, style: const TextStyle(fontWeight: FontWeight.w900)),
             ),
           ],
         ],
@@ -925,7 +922,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
     if (!_consent) {
       if (showSnackbars) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('You must accept Terms & Conditions before continuing.')),
+          SnackBar(content: Text(context.l10n.mustAcceptTermsBeforeContinuing)),
         );
       }
       return false;
@@ -933,7 +930,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
     if (_consentTimestampUtc == null) {
       if (showSnackbars) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Consent timestamp missing. Please accept Terms & Conditions again.')),
+          SnackBar(content: Text(context.l10n.consentTimestampMissing)),
         );
       }
       return false;
@@ -941,7 +938,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
     if (widget.requireAvailabilityConfirmation && !_availabilityConfirmed) {
       if (showSnackbars) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please confirm your availability before continuing.')),
+          SnackBar(content: Text(context.l10n.pleaseConfirmAvailabilityBeforeContinuing)),
         );
       }
       return false;
@@ -949,7 +946,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
     if (!_datesReady) {
       if (showSnackbars) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please add at least 3 preferred slots on different days.')),
+          SnackBar(content: Text(context.l10n.pleaseAdd3PreferredSlots)),
         );
       }
       return false;
@@ -958,7 +955,7 @@ class _BookingRequestFormState extends State<BookingRequestForm> {
       if (_physicalVenue != 'home' && _physicalVenue != 'office') {
         if (showSnackbars) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Select home or office for the physical visit.')),
+            SnackBar(content: Text(context.l10n.selectHomeOrOfficePhysicalVisit)),
           );
         }
         return false;

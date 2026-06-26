@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n_extensions.dart';
 import '../services/api_service.dart';
 import '../utils/dio_error_message.dart';
 import 'app_palette.dart';
@@ -118,13 +119,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = messageFromDioException(e) ?? 'Failed to load.';
+        _error = messageFromDioException(e) ?? context.l10n.failedToLoad;
       });
     } catch (_) {
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = 'Failed to load.';
+        _error = context.l10n.failedToLoad;
       });
     }
   }
@@ -225,6 +226,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final user = _user;
     final care = _careActions;
     final careCount = (care == null)
@@ -251,7 +253,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         backgroundColor: SmartAfyaPalette.scaffoldBg,
         elevation: 0,
         foregroundColor: SmartAfyaPalette.deepText,
-        title: const Text('Appointments', style: TextStyle(fontWeight: FontWeight.w900)),
+        title: Text(l10n.appointmentsTitle, style: const TextStyle(fontWeight: FontWeight.w900)),
       ),
       body: SafeArea(
         child: RefreshIndicator(
@@ -272,7 +274,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                               FilledButton(
                                 onPressed: _load,
                                 style: FilledButton.styleFrom(backgroundColor: SmartAfyaPalette.primaryBlue),
-                                child: const Text('Retry'),
+                                child: Text(l10n.retry),
                               ),
                             ],
                           ),
@@ -285,9 +287,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         if (user?.isClient == true && careCount > 0) ...[
                           _tile(
                             context,
-                            title: 'Action required ($careCount)',
-                            subtitle:
-                                'Your specialist requested a transfer or is unavailable.\nTap to choose: transfer or reschedule.',
+                            title: l10n.actionRequiredCount(careCount),
+                            subtitle: l10n.careActionsBlurb,
                             onTap: () async {
                               await Navigator.push<void>(
                                 context,
@@ -295,13 +296,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                               );
                               await _load();
                             },
-                            actionHint: 'Tap to resolve transfer/reschedule',
+                            actionHint: l10n.tapToResolveTransferReschedule,
                           ),
                           const SizedBox(height: 4),
                         ],
                         if (followUpSessions.isNotEmpty) ...[
                           Text(
-                            'Follow-up requested',
+                            l10n.followUpRequested,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w900,
                                   color: SmartAfyaPalette.deepText,
@@ -311,19 +312,21 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                           ...followUpSessions.map((s) {
                             final dateUtc = _parseFollowUpSuggestedDateUtc(s.notes);
                             final dateLabel = (dateUtc == null)
-                                ? 'Suggested date: —'
-                                : 'Suggested date: ${dateUtc.toLocal().year}-${dateUtc.toLocal().month.toString().padLeft(2, '0')}-${dateUtc.toLocal().day.toString().padLeft(2, '0')}';
+                                ? l10n.suggestedDateDash
+                                : l10n.suggestedDateValue(
+                                    '${dateUtc.toLocal().year}-${dateUtc.toLocal().month.toString().padLeft(2, '0')}-${dateUtc.toLocal().day.toString().padLeft(2, '0')}',
+                                  );
                             return _tile(
                               context,
-                              title: 'Doctor recommended another session',
-                              subtitle: '$dateLabel\nTap to choose your availability & proceed.',
+                              title: l10n.doctorRecommendedAnotherSession,
+                              subtitle: '$dateLabel\n${l10n.tapToChooseAvailabilityProceed}',
                               onTap: () async {
                                 final ok = await Navigator.push<bool>(
                                   context,
                                   MaterialPageRoute<bool>(
                                     builder: (_) => CreateBookingScreen(
                                       preferredSpecialistId: (s.doctorId ?? '').trim().isEmpty ? null : s.doctorId,
-                                      initialDescription: 'Follow-up session requested by doctor.',
+                                      initialDescription: l10n.followUpInitialDescription,
                                       initialDurationMinutes: null,
                                       durationLocked: false,
                                       requireAvailabilityConfirmation: true,
@@ -332,12 +335,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                                 );
                                 if (ok == true && context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Follow-up booking submitted.')),
+                                    SnackBar(content: Text(l10n.followUpBookingSubmitted)),
                                   );
                                   await _load();
                                 }
                               },
-                              actionHint: 'Tap to choose availability & proceed',
+                              actionHint: l10n.tapToChooseAvailabilityProceed,
                             );
                           }),
                           const SizedBox(height: 16),
@@ -360,7 +363,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                         if (_tab == _AppointmentsTab.upcoming && _bookings.isNotEmpty) ...[
                           const SizedBox(height: 18),
                           Text(
-                            _user?.isDoctor == true ? 'All bookings (coordination)' : 'Pending requests',
+                            _user?.isDoctor == true ? l10n.allBookingsCoordination : l10n.pendingRequests,
                             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.w900,
                                   color: SmartAfyaPalette.deepText,
@@ -374,9 +377,13 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                               })
                               .map((b) => _tile(
                                     context,
-                                    title: 'Booking · ${b.status}',
-                                    subtitle:
-                                        'Type: ${_friendlyType(b.sessionType)}\nPreferred: ${b.preferredDatesRaw.length > 40 ? "${b.preferredDatesRaw.substring(0, 40)}…" : b.preferredDatesRaw}',
+                                    title: l10n.bookingStatusTitle(b.status),
+                                    subtitle: l10n.bookingTypePreferred(
+                                      _friendlyType(b.sessionType),
+                                      b.preferredDatesRaw.length > 40
+                                          ? '${b.preferredDatesRaw.substring(0, 40)}…'
+                                          : b.preferredDatesRaw,
+                                    ),
                                   )),
                         ],
                       ],
@@ -387,6 +394,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   }
 
   Widget _emptyState() {
+    final l10n = context.l10n;
     final isUpcoming = _tab == _AppointmentsTab.upcoming;
     final isMissed = _tab == _AppointmentsTab.missed;
     return Padding(
@@ -413,10 +421,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           const SizedBox(height: 12),
           Text(
             isUpcoming
-                ? 'No upcoming appointments'
+                ? l10n.noUpcomingAppointments
                 : isMissed
-                    ? 'No missed sessions'
-                    : 'No completed appointments yet',
+                    ? l10n.noMissedSessions
+                    : l10n.noCompletedAppointmentsYet,
             style: TextStyle(
               fontWeight: FontWeight.w800,
               color: SmartAfyaPalette.deepText.withValues(alpha: 0.78),
@@ -426,10 +434,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           const SizedBox(height: 4),
           Text(
             isUpcoming
-                ? 'Book a consultation to get started.'
+                ? l10n.bookConsultationToGetStarted
                 : isMissed
-                    ? 'When a session is marked missed, it will appear here. You can reschedule anytime.'
-                    : 'Finished consultations appear here.',
+                    ? l10n.missedSessionsInfo
+                    : l10n.finishedConsultationsInfo,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: SmartAfyaPalette.mutedText.withValues(alpha: 0.85),
@@ -461,7 +469,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 11),
               ),
               icon: const Icon(Icons.add_rounded, size: 18),
-              label: const Text('Book a consultation', style: TextStyle(fontWeight: FontWeight.w900)),
+              label: Text(l10n.bookAConsultation, style: const TextStyle(fontWeight: FontWeight.w900)),
             ),
           ],
         ],
@@ -470,6 +478,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   }
 
   Widget _sessionTile(SessionDto s, BookingDto? b) {
+    final l10n = context.l10n;
     final isClientPhysical =
         _user?.isClient == true && (b?.sessionType ?? '').toLowerCase().trim() == 'physical';
     final stNorm = s.status.toLowerCase().trim();
@@ -479,7 +488,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     final hasReport = notes.contains('CONSULTATION_REPORT:');
 
     final dt = DateTime.tryParse((s.scheduledAt ?? '').trim())?.toLocal();
-    final dateLabel = dt == null ? 'TBD' : _formatShortDate(dt);
+    final dateLabel = dt == null ? l10n.tbdShort : _formatShortDate(dt);
     final timeLabel = dt == null ? '' : _formatTime(dt);
     final typeLabel = _friendlyType(b?.sessionType);
     final statusInfo = _statusBadge(s.status);
@@ -487,8 +496,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     final doctor = (s.doctorId ?? '').isNotEmpty ? _doctorsById[s.doctorId!] : null;
     final specialistName = (doctor?.fullName.trim().isNotEmpty == true)
         ? doctor!.fullName.trim()
-        : ((s.doctorId ?? '').isNotEmpty ? 'Specialist assigned' : 'Awaiting specialist');
-    final specialtyLabel = doctor?.specialistLabel ?? 'Mental health specialist';
+        : ((s.doctorId ?? '').isNotEmpty ? l10n.specialistAssignedShort : l10n.awaitingSpecialist);
+    final specialtyLabel = doctor?.specialistLabel ?? l10n.mentalHealthSpecialist;
     final initials = _initials(doctor?.fullName);
 
     final payment = _paymentsBySessionId[s.id];
@@ -505,7 +514,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     VoidCallback? ctaOnPressed;
 
     if (isClientPhysical && b != null && isUpcomingTab) {
-      ctaLabel = 'View';
+      ctaLabel = l10n.ctaView;
       ctaIcon = Icons.arrow_forward_rounded;
       ctaOnPressed = () => showClientPhysicalBookingActions(
             context: context,
@@ -515,7 +524,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             onDone: _load,
           );
     } else if (isMissed && _user?.isClient == true) {
-      ctaLabel = 'Reschedule';
+      ctaLabel = l10n.ctaReschedule;
       ctaIcon = Icons.event_repeat_rounded;
       ctaOnPressed = () async {
         await Navigator.push<void>(
@@ -530,18 +539,18 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         await _load();
       };
     } else if (needsPayment) {
-      ctaLabel = 'Pay';
+      ctaLabel = l10n.ctaPay;
       ctaIcon = Icons.payments_rounded;
       ctaOnPressed = () async {
         await _openPay(s);
         await _load();
       };
     } else if (joinable) {
-      ctaLabel = 'Join';
+      ctaLabel = l10n.ctaJoin;
       ctaIcon = Icons.video_call_rounded;
       ctaOnPressed = () => _openDetail(s, b);
     } else if (isCompleted && hasReport && _user?.isClient == true) {
-      ctaLabel = 'Feedback';
+      ctaLabel = l10n.ctaFeedback;
       ctaIcon = Icons.rate_review_rounded;
       ctaOnPressed = () async {
         await Navigator.push<bool>(
@@ -551,7 +560,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         await _load();
       };
     } else {
-      ctaLabel = 'View';
+      ctaLabel = l10n.ctaView;
       ctaIcon = Icons.arrow_forward_rounded;
       ctaOnPressed = () => _openDetail(s, b);
     }
@@ -642,7 +651,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                     if (isUpcomingTab && payment != null)
                       _metaChip(
                         Icons.payments_rounded,
-                        paymentDone ? 'Paid' : (paymentReview ? 'In review' : 'Pay needed'),
+                        paymentDone
+                            ? l10n.paymentPaid
+                            : (paymentReview ? l10n.paymentInReview : l10n.paymentNeeded),
                       ),
                   ],
                 ),

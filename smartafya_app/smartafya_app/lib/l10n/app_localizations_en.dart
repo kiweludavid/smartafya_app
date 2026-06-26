@@ -66,6 +66,541 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginFailed => 'Login failed. Please try again.';
 
   @override
+  String get signupSubtitle =>
+      'Create your account and start your mental wellness journey';
+
+  @override
+  String get accountCreatedSuccessfully => 'Account created successfully.';
+
+  @override
+  String get signupFailed => 'Sign up failed. Please try again.';
+
+  @override
+  String get fullName => 'Full Name';
+
+  @override
+  String get fullNameHelper => 'Use your real name for your profile';
+
+  @override
+  String get pleaseEnterFullName => 'Please enter your full name.';
+
+  @override
+  String get nameMinLength => 'Name should be at least 3 characters.';
+
+  @override
+  String get emailSignupHelper => 'We will send verification to this email';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get phoneHelper => 'Include country code (e.g. +255...)';
+
+  @override
+  String get pleaseEnterPhone => 'Please enter your phone number.';
+
+  @override
+  String get enterValidPhone => 'Enter a valid phone number.';
+
+  @override
+  String get passwordSignupHelper =>
+      '8+ chars, 1 uppercase, 1 special character';
+
+  @override
+  String get passwordStrengthHint =>
+      'Use 8+ chars with 1 uppercase and 1 special character.';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get confirmPasswordHelper => 'Re-enter your password';
+
+  @override
+  String get pleaseConfirmPassword => 'Please confirm your password.';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match.';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account? ';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get specialistType => 'Specialist Type';
+
+  @override
+  String get specialistTypeHelper => 'Required for doctor accounts';
+
+  @override
+  String get pleaseSelectSpecialistType =>
+      'Please select your specialist type.';
+
+  @override
+  String get psychologist => 'Psychologist';
+
+  @override
+  String get psychiatrist => 'Psychiatrist';
+
+  @override
+  String get therapist => 'Therapist';
+
+  @override
+  String get cleric => 'Cleric';
+
+  @override
+  String get influencer => 'Influencer';
+
+  @override
+  String get doctor => 'Doctor';
+
+  @override
+  String get client => 'Client';
+
+  @override
+  String get appointmentsTitle => 'Appointments';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get completed => 'Completed';
+
+  @override
+  String get missed => 'Missed';
+
+  @override
+  String get failedToLoad => 'Failed to load.';
+
+  @override
+  String actionRequiredCount(int count) {
+    return 'Action required ($count)';
+  }
+
+  @override
+  String get careActionsBlurb =>
+      'Your specialist requested a transfer or is unavailable. Tap to choose: transfer or reschedule.';
+
+  @override
+  String get tapToResolveTransferReschedule =>
+      'Tap to resolve transfer/reschedule';
+
+  @override
+  String get followUpRequested => 'Follow-up requested';
+
+  @override
+  String get suggestedDateDash => 'Suggested date: —';
+
+  @override
+  String suggestedDateValue(String date) {
+    return 'Suggested date: $date';
+  }
+
+  @override
+  String get doctorRecommendedAnotherSession =>
+      'Doctor recommended another session';
+
+  @override
+  String get tapToChooseAvailabilityProceed =>
+      'Tap to choose your availability & proceed.';
+
+  @override
+  String get followUpInitialDescription =>
+      'Follow-up session requested by doctor.';
+
+  @override
+  String get followUpBookingSubmitted => 'Follow-up booking submitted.';
+
+  @override
+  String get pendingRequests => 'Pending requests';
+
+  @override
+  String get allBookingsCoordination => 'All bookings (coordination)';
+
+  @override
+  String bookingStatusTitle(String status) {
+    return 'Booking · $status';
+  }
+
+  @override
+  String bookingTypePreferred(String type, String preferred) {
+    return 'Type: $type\nPreferred: $preferred';
+  }
+
+  @override
+  String get noUpcomingAppointments => 'No upcoming appointments';
+
+  @override
+  String get noMissedSessions => 'No missed sessions';
+
+  @override
+  String get noCompletedAppointmentsYet => 'No completed appointments yet';
+
+  @override
+  String get bookConsultationToGetStarted =>
+      'Book a consultation to get started.';
+
+  @override
+  String get missedSessionsInfo =>
+      'When a session is marked missed, it will appear here. You can reschedule anytime.';
+
+  @override
+  String get finishedConsultationsInfo => 'Finished consultations appear here.';
+
+  @override
+  String get bookAConsultation => 'Book a consultation';
+
+  @override
+  String get tbdShort => 'TBD';
+
+  @override
+  String get specialistAssignedShort => 'Specialist assigned';
+
+  @override
+  String get awaitingSpecialist => 'Awaiting specialist';
+
+  @override
+  String get ctaView => 'View';
+
+  @override
+  String get ctaReschedule => 'Reschedule';
+
+  @override
+  String get ctaPay => 'Pay';
+
+  @override
+  String get ctaJoin => 'Join';
+
+  @override
+  String get ctaFeedback => 'Feedback';
+
+  @override
+  String get paymentPaid => 'Paid';
+
+  @override
+  String get paymentInReview => 'In review';
+
+  @override
+  String get paymentNeeded => 'Pay needed';
+
+  @override
+  String get bookingIntro =>
+      'Complete the details below. Your answers help us match you and prepare for your session.';
+
+  @override
+  String get termsAndConditions => 'Terms & Conditions';
+
+  @override
+  String get termsBody =>
+      'By submitting this form, you confirm that the information you provide is accurate to the best of your knowledge. Your responses may be reviewed by your assigned care team to help prepare for your session. If you are experiencing an emergency, contact local emergency services immediately.';
+
+  @override
+  String lastAccepted(String timestamp) {
+    return 'Last accepted: $timestamp';
+  }
+
+  @override
+  String get acceptTermsContinue => 'Accept Terms & Continue';
+
+  @override
+  String get viewTerms => 'View Terms & Conditions';
+
+  @override
+  String get acceptTermsToEnableSubmission =>
+      'Accept the Terms & Conditions above to enable submission.';
+
+  @override
+  String get availabilityConfirmation => 'Availability confirmation';
+
+  @override
+  String get confirmAttendSelectedTimes =>
+      'I confirm I can attend at the selected times.';
+
+  @override
+  String get confirmAvailabilityToEnable =>
+      'Confirm availability to enable submission.';
+
+  @override
+  String get stateOfMind => 'State of mind';
+
+  @override
+  String get describeCurrentConcerns => 'Describe your current concerns';
+
+  @override
+  String get pleaseAddMoreDetail =>
+      'Please add more detail (at least a short paragraph).';
+
+  @override
+  String get whoShouldAttendYou => 'Who should attend you?';
+
+  @override
+  String get whoShouldAttendHelp =>
+      'Pick a specific psychologist, psychiatrist, therapist, faith leader, or even a known mental-health influencer. Don’t see your person? Use “Special arrangement” inside the picker.';
+
+  @override
+  String get sessionType => 'Session type';
+
+  @override
+  String get audio => 'Audio';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get physical => 'Physical';
+
+  @override
+  String get sessionTypeVisitSite => 'Session type (visit site)';
+
+  @override
+  String get homeVisit => 'Home visit';
+
+  @override
+  String get officeClinic => 'Office / clinic';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get preferredDatesTimes => 'Preferred dates & times (at least 3)';
+
+  @override
+  String get preferredDatesHelp =>
+      'Add at least 3 slots on different calendar days. Each slot uses your chosen duration as the session length.';
+
+  @override
+  String get addSlot => 'Add slot';
+
+  @override
+  String get visitLocation => 'Visit location';
+
+  @override
+  String get visitLocationHelp => 'Where should your care team meet you?';
+
+  @override
+  String get street => 'Street';
+
+  @override
+  String get streetHint => 'e.g. Masaki Peninsula, Plot 12';
+
+  @override
+  String get enterStreetOrArea => 'Enter your street or area.';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get cityHint => 'e.g. Dar es Salaam';
+
+  @override
+  String get enterCity => 'Enter your city.';
+
+  @override
+  String get selectedSpecialist => 'Selected specialist';
+
+  @override
+  String get lockedForThisBooking => 'Locked for this booking';
+
+  @override
+  String get chooseYourSpecialist => 'Choose your specialist';
+
+  @override
+  String get browseSpecialistsHelp =>
+      'Browse psychologists, clerics, influencers and more — or let Smart Afya match you.';
+
+  @override
+  String get smartAfyaMatch => 'Smart Afya match';
+
+  @override
+  String get nextAvailableSpecialist =>
+      'Next available specialist that fits your profile';
+
+  @override
+  String get smartAfyaSpecialist => 'Smart Afya specialist';
+
+  @override
+  String get specialArrangement => 'Special arrangement';
+
+  @override
+  String get adminWillCoordinate => 'admin will coordinate';
+
+  @override
+  String get noPreference => 'No preference';
+
+  @override
+  String get matchAnyoneAvailable =>
+      'Smart Afya will match you with anyone available';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get physicalPriceNegotiable =>
+      'Physical session price is negotiable (admin + client).';
+
+  @override
+  String estimatedPrice(String price) {
+    return 'Estimated price: $price';
+  }
+
+  @override
+  String get submitBooking => 'Submit booking';
+
+  @override
+  String get acceptTermsToSubmit => 'Accept Terms to submit';
+
+  @override
+  String get confirmAvailabilityToSubmit => 'Confirm availability to submit';
+
+  @override
+  String get add3PreferredDatesToContinue =>
+      'Add 3 preferred dates to continue';
+
+  @override
+  String get completePaymentToSubmit => 'Complete payment to submit';
+
+  @override
+  String get paymentReceived => 'Payment received';
+
+  @override
+  String get paymentRequired => 'Payment required';
+
+  @override
+  String get canSubmitBookingNow =>
+      'You can submit your booking request now. Admin will confirm and schedule.';
+
+  @override
+  String payBeforeSubmitting(String price) {
+    return 'Pay $price before submitting. Upload proof or complete mobile money / bank transfer.';
+  }
+
+  @override
+  String get payNow => 'Pay now';
+
+  @override
+  String get mustAcceptTermsBeforeContinuing =>
+      'You must accept Terms & Conditions before continuing.';
+
+  @override
+  String get consentTimestampMissing =>
+      'Consent timestamp missing. Please accept Terms & Conditions again.';
+
+  @override
+  String get pleaseConfirmAvailabilityBeforeContinuing =>
+      'Please confirm your availability before continuing.';
+
+  @override
+  String get pleaseAdd3PreferredSlots =>
+      'Please add at least 3 preferred slots on different days.';
+
+  @override
+  String get selectHomeOrOfficePhysicalVisit =>
+      'Select home or office for the physical visit.';
+
+  @override
+  String get couldNotStartPaymentTryAgain =>
+      'Could not start payment. Please try again.';
+
+  @override
+  String get paymentRecordedSubmitNow =>
+      'Payment recorded. You can submit your booking now.';
+
+  @override
+  String get couldNotStartPayment => 'Could not start payment.';
+
+  @override
+  String get maxPreferredSlots => 'You can add up to 6 preferred slots.';
+
+  @override
+  String get appointmentDetailsTitle => 'Appointment details';
+
+  @override
+  String get timeToBeConfirmed => 'Time to be confirmed';
+
+  @override
+  String get specialistPendingAssignment => 'Specialist · pending assignment';
+
+  @override
+  String get couldNotOpenSessionLink => 'Could not open the session link';
+
+  @override
+  String get cancelThisAppointmentTitle => 'Cancel this appointment?';
+
+  @override
+  String get cancelThisAppointmentBody =>
+      'Your specialist will be notified. You can re-book any time afterwards.';
+
+  @override
+  String get keep => 'Keep';
+
+  @override
+  String get cancelAppointment => 'Cancel appointment';
+
+  @override
+  String get couldNotCancelTryAgain => 'Could not cancel — please try again.';
+
+  @override
+  String get appointmentSection => 'Appointment';
+
+  @override
+  String get dateLabel => 'Date';
+
+  @override
+  String get timeLabel => 'Time';
+
+  @override
+  String get typeLabel => 'Type';
+
+  @override
+  String get statusLabel => 'Status';
+
+  @override
+  String get paymentSection => 'Payment';
+
+  @override
+  String get amountLabel => 'Amount';
+
+  @override
+  String get setByAdmin => 'Set by admin';
+
+  @override
+  String get completePaymentToConfirm =>
+      'Complete payment to confirm this session.';
+
+  @override
+  String get notesAndInstructions => 'Notes & instructions';
+
+  @override
+  String get missedSessionHelp =>
+      'You missed this session. Reschedule to keep your care plan on track, or chat with our team if you need help.';
+
+  @override
+  String get payAndConfirm => 'Pay & Confirm';
+
+  @override
+  String get sessionNotYetJoinable => 'Session not yet joinable';
+
+  @override
+  String get statusCancelled => 'Cancelled';
+
+  @override
+  String get statusMissed => 'Missed';
+
+  @override
+  String get statusInProgress => 'In progress';
+
+  @override
+  String get statusScheduled => 'Scheduled';
+
+  @override
+  String get statusAwaitingPaymentLower => 'Awaiting payment';
+
+  @override
   String get retry => 'Retry';
 
   @override
@@ -269,9 +804,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get startNewConsultation => 'Start New Consultation';
-
-  @override
-  String get noUpcomingAppointments => 'No upcoming appointments';
 
   @override
   String get bookConsultationToStart => 'Book a consultation to get started.';

@@ -66,6 +66,546 @@ class AppLocalizationsSw extends AppLocalizations {
   String get loginFailed => 'Kuingia kumeshindikana. Tafadhali jaribu tena.';
 
   @override
+  String get signupSubtitle =>
+      'Tengeneza akaunti yako na uanze safari yako ya ustawi wa afya ya akili';
+
+  @override
+  String get accountCreatedSuccessfully =>
+      'Akaunti imetengenezwa kwa mafanikio.';
+
+  @override
+  String get signupFailed => 'Usajili umeshindikana. Tafadhali jaribu tena.';
+
+  @override
+  String get fullName => 'Jina kamili';
+
+  @override
+  String get fullNameHelper => 'Tumia jina lako halisi kwa wasifu wako';
+
+  @override
+  String get pleaseEnterFullName => 'Tafadhali weka jina lako kamili.';
+
+  @override
+  String get nameMinLength => 'Jina liwe na angalau herufi 3.';
+
+  @override
+  String get emailSignupHelper =>
+      'Tutatumia barua pepe hii kuthibitisha akaunti';
+
+  @override
+  String get phoneNumber => 'Namba ya simu';
+
+  @override
+  String get phoneHelper => 'Jumuisha kodi ya nchi (mf. +255...)';
+
+  @override
+  String get pleaseEnterPhone => 'Tafadhali weka namba yako ya simu.';
+
+  @override
+  String get enterValidPhone => 'Weka namba halali ya simu.';
+
+  @override
+  String get passwordSignupHelper =>
+      'Herufi 8+, herufi kubwa 1, na alama maalum 1';
+
+  @override
+  String get passwordStrengthHint =>
+      'Tumia herufi 8+ zikiwa na herufi kubwa 1 na alama maalum 1.';
+
+  @override
+  String get confirmPassword => 'Thibitisha nenosiri';
+
+  @override
+  String get confirmPasswordHelper => 'Weka tena nenosiri lako';
+
+  @override
+  String get pleaseConfirmPassword => 'Tafadhali thibitisha nenosiri lako.';
+
+  @override
+  String get passwordsDoNotMatch => 'Nenosiri hazilingani.';
+
+  @override
+  String get alreadyHaveAccount => 'Tayari una akaunti? ';
+
+  @override
+  String get role => 'Jukumu';
+
+  @override
+  String get specialistType => 'Aina ya mtaalamu';
+
+  @override
+  String get specialistTypeHelper => 'Inahitajika kwa akaunti za daktari';
+
+  @override
+  String get pleaseSelectSpecialistType =>
+      'Tafadhali chagua aina ya mtaalamu wako.';
+
+  @override
+  String get psychologist => 'Mwanasaikolojia';
+
+  @override
+  String get psychiatrist => 'Daktari wa akili';
+
+  @override
+  String get therapist => 'Mtaalamu wa tiba';
+
+  @override
+  String get cleric => 'Kiongozi wa dini';
+
+  @override
+  String get influencer => 'Mshawishi';
+
+  @override
+  String get doctor => 'Daktari';
+
+  @override
+  String get client => 'Mteja';
+
+  @override
+  String get appointmentsTitle => 'Miadi';
+
+  @override
+  String get upcoming => 'Inayofuata';
+
+  @override
+  String get completed => 'Imekamilika';
+
+  @override
+  String get missed => 'Iliyokosekana';
+
+  @override
+  String get failedToLoad => 'Imeshindikana kupakia.';
+
+  @override
+  String actionRequiredCount(int count) {
+    return 'Hatua inahitajika ($count)';
+  }
+
+  @override
+  String get careActionsBlurb =>
+      'Mtaalamu wako ameomba uhamisho au hayupo. Gusa kuchagua: uhamisho au kupanga upya.';
+
+  @override
+  String get tapToResolveTransferReschedule =>
+      'Gusa kutatua uhamisho/kupanga upya';
+
+  @override
+  String get followUpRequested => 'Ufuatiliaji umeombwa';
+
+  @override
+  String get suggestedDateDash => 'Tarehe iliyopendekezwa: —';
+
+  @override
+  String suggestedDateValue(String date) {
+    return 'Tarehe iliyopendekezwa: $date';
+  }
+
+  @override
+  String get doctorRecommendedAnotherSession =>
+      'Daktari amependekeza kipindi kingine';
+
+  @override
+  String get tapToChooseAvailabilityProceed =>
+      'Gusa kuchagua muda wako wa kupatikana na kuendelea.';
+
+  @override
+  String get followUpInitialDescription =>
+      'Kipindi cha ufuatiliaji kimeombwa na daktari.';
+
+  @override
+  String get followUpBookingSubmitted => 'Ombi la ufuatiliaji limewasilishwa.';
+
+  @override
+  String get pendingRequests => 'Maombi yanayosubiri';
+
+  @override
+  String get allBookingsCoordination => 'Maombi yote (uratibu)';
+
+  @override
+  String bookingStatusTitle(String status) {
+    return 'Ombi · $status';
+  }
+
+  @override
+  String bookingTypePreferred(String type, String preferred) {
+    return 'Aina: $type\nMuda uliopendekezwa: $preferred';
+  }
+
+  @override
+  String get noUpcomingAppointments => 'Hakuna miadi inayofuata';
+
+  @override
+  String get noMissedSessions => 'Hakuna vipindi vilivyokosekana';
+
+  @override
+  String get noCompletedAppointmentsYet => 'Bado hakuna miadi iliyokamilika';
+
+  @override
+  String get bookConsultationToGetStarted => 'Weka miadi ya ushauri kuanza.';
+
+  @override
+  String get missedSessionsInfo =>
+      'Kipindi kikihesabiwa kuwa kimekosekana, kitaonekana hapa. Unaweza kupanga upya muda wowote.';
+
+  @override
+  String get finishedConsultationsInfo =>
+      'Ushauri uliokamilika utaonekana hapa.';
+
+  @override
+  String get bookAConsultation => 'Weka miadi ya ushauri';
+
+  @override
+  String get tbdShort => 'Haijabainishwa';
+
+  @override
+  String get specialistAssignedShort => 'Mtaalamu ameteuliwa';
+
+  @override
+  String get awaitingSpecialist => 'Inasubiri mtaalamu';
+
+  @override
+  String get ctaView => 'Angalia';
+
+  @override
+  String get ctaReschedule => 'Panga upya';
+
+  @override
+  String get ctaPay => 'Lipa';
+
+  @override
+  String get ctaJoin => 'Jiunge';
+
+  @override
+  String get ctaFeedback => 'Maoni';
+
+  @override
+  String get paymentPaid => 'Imelipwa';
+
+  @override
+  String get paymentInReview => 'Inakaguliwa';
+
+  @override
+  String get paymentNeeded => 'Malipo yanahitajika';
+
+  @override
+  String get bookingIntro =>
+      'Jaza maelezo hapa chini. Majibu yako hutusaidia kukulinganisha na kujiandaa kwa kipindi chako.';
+
+  @override
+  String get termsAndConditions => 'Vigezo na Masharti';
+
+  @override
+  String get termsBody =>
+      'Kwa kuwasilisha fomu hii, unathibitisha kuwa taarifa unazotoa ni sahihi kadri unavyojua. Majibu yako yanaweza kupitiawa na timu yako ya huduma ili kujiandaa kwa kipindi chako. Ikiwa una dharura, wasiliana na huduma za dharura mara moja.';
+
+  @override
+  String lastAccepted(String timestamp) {
+    return 'Mara ya mwisho kukubali: $timestamp';
+  }
+
+  @override
+  String get acceptTermsContinue => 'Kubali masharti na endelea';
+
+  @override
+  String get viewTerms => 'Angalia Vigezo na Masharti';
+
+  @override
+  String get acceptTermsToEnableSubmission =>
+      'Kubali Vigezo na Masharti hapo juu ili uweze kuwasilisha.';
+
+  @override
+  String get availabilityConfirmation => 'Uthibitisho wa kupatikana';
+
+  @override
+  String get confirmAttendSelectedTimes =>
+      'Nathibitisha ninaweza kuhudhuria katika nyakati zilizochaguliwa.';
+
+  @override
+  String get confirmAvailabilityToEnable =>
+      'Thibitisha kupatikana ili uweze kuwasilisha.';
+
+  @override
+  String get stateOfMind => 'Hali ya hisia';
+
+  @override
+  String get describeCurrentConcerns => 'Eleza changamoto zako za sasa';
+
+  @override
+  String get pleaseAddMoreDetail =>
+      'Tafadhali ongeza maelezo zaidi (angalau aya fupi).';
+
+  @override
+  String get whoShouldAttendYou => 'Nani akuhudumie?';
+
+  @override
+  String get whoShouldAttendHelp =>
+      'Chagua mwanasaikolojia, daktari wa akili, mtaalamu wa tiba, kiongozi wa dini, au hata mshauri maarufu. Humwoni unayemtafuta? Tumia “Mpangilio maalum” ndani ya kichaguzi.';
+
+  @override
+  String get sessionType => 'Aina ya kipindi';
+
+  @override
+  String get audio => 'Sauti';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get physical => 'Ana kwa ana';
+
+  @override
+  String get sessionTypeVisitSite => 'Aina ya kipindi (eneo la ziara)';
+
+  @override
+  String get homeVisit => 'Ziara nyumbani';
+
+  @override
+  String get officeClinic => 'Ofisi / kliniki';
+
+  @override
+  String get duration => 'Muda';
+
+  @override
+  String get preferredDatesTimes =>
+      'Tarehe na nyakati unazopendelea (angalau 3)';
+
+  @override
+  String get preferredDatesHelp =>
+      'Ongeza angalau nafasi 3 katika siku tofauti. Kila nafasi hutumia muda uliochagua kama urefu wa kipindi.';
+
+  @override
+  String get addSlot => 'Ongeza nafasi';
+
+  @override
+  String get visitLocation => 'Eneo la ziara';
+
+  @override
+  String get visitLocationHelp => 'Timu ya huduma ikutane nawe wapi?';
+
+  @override
+  String get street => 'Mtaa';
+
+  @override
+  String get streetHint => 'mf. Masaki Peninsula, Plot 12';
+
+  @override
+  String get enterStreetOrArea => 'Weka mtaa au eneo lako.';
+
+  @override
+  String get city => 'Jiji';
+
+  @override
+  String get cityHint => 'mf. Dar es Salaam';
+
+  @override
+  String get enterCity => 'Weka jiji lako.';
+
+  @override
+  String get selectedSpecialist => 'Mtaalamu aliyechaguliwa';
+
+  @override
+  String get lockedForThisBooking => 'Imefungwa kwa ombi hili';
+
+  @override
+  String get chooseYourSpecialist => 'Chagua mtaalamu wako';
+
+  @override
+  String get browseSpecialistsHelp =>
+      'Tafuta wanasaikolojia, viongozi wa dini, washawishi na wengine — au acha Smart Afya ikulinganishe.';
+
+  @override
+  String get smartAfyaMatch => 'Ulinganisho wa Smart Afya';
+
+  @override
+  String get nextAvailableSpecialist => 'Mtaalamu anayepatikana anayekufaa';
+
+  @override
+  String get smartAfyaSpecialist => 'Mtaalamu wa Smart Afya';
+
+  @override
+  String get specialArrangement => 'Mpangilio maalum';
+
+  @override
+  String get adminWillCoordinate => 'msimamizi ataratibu';
+
+  @override
+  String get noPreference => 'Hakuna upendeleo';
+
+  @override
+  String get matchAnyoneAvailable =>
+      'Smart Afya itakulinganisha na yeyote anayepatikana';
+
+  @override
+  String get change => 'Badilisha';
+
+  @override
+  String get clear => 'Ondoa';
+
+  @override
+  String get physicalPriceNegotiable =>
+      'Bei ya kipindi cha ana kwa ana inaweza kujadiliwa (msimamizi + mteja).';
+
+  @override
+  String estimatedPrice(String price) {
+    return 'Makadirio ya bei: $price';
+  }
+
+  @override
+  String get submitBooking => 'Wasilisha ombi';
+
+  @override
+  String get acceptTermsToSubmit => 'Kubali masharti ili kuwasilisha';
+
+  @override
+  String get confirmAvailabilityToSubmit =>
+      'Thibitisha kupatikana ili kuwasilisha';
+
+  @override
+  String get add3PreferredDatesToContinue =>
+      'Ongeza tarehe 3 unazopendelea kuendelea';
+
+  @override
+  String get completePaymentToSubmit => 'Kamilisha malipo ili kuwasilisha';
+
+  @override
+  String get paymentReceived => 'Malipo yamepokelewa';
+
+  @override
+  String get paymentRequired => 'Malipo yanahitajika';
+
+  @override
+  String get canSubmitBookingNow =>
+      'Sasa unaweza kuwasilisha ombi lako. Msimamizi atathibitisha na kupanga.';
+
+  @override
+  String payBeforeSubmitting(String price) {
+    return 'Lipa $price kabla ya kuwasilisha. Pakia uthibitisho au maliza malipo ya simu/benki.';
+  }
+
+  @override
+  String get payNow => 'Lipa sasa';
+
+  @override
+  String get mustAcceptTermsBeforeContinuing =>
+      'Lazima ukubali Vigezo na Masharti kabla ya kuendelea.';
+
+  @override
+  String get consentTimestampMissing =>
+      'Muda wa ridhaa haupo. Tafadhali kubali Vigezo na Masharti tena.';
+
+  @override
+  String get pleaseConfirmAvailabilityBeforeContinuing =>
+      'Tafadhali thibitisha kupatikana kabla ya kuendelea.';
+
+  @override
+  String get pleaseAdd3PreferredSlots =>
+      'Tafadhali ongeza angalau nafasi 3 za siku tofauti.';
+
+  @override
+  String get selectHomeOrOfficePhysicalVisit =>
+      'Chagua nyumbani au ofisini kwa ziara ya ana kwa ana.';
+
+  @override
+  String get couldNotStartPaymentTryAgain =>
+      'Imeshindikana kuanzisha malipo. Tafadhali jaribu tena.';
+
+  @override
+  String get paymentRecordedSubmitNow =>
+      'Malipo yameandikwa. Sasa unaweza kuwasilisha ombi lako.';
+
+  @override
+  String get couldNotStartPayment => 'Imeshindikana kuanzisha malipo.';
+
+  @override
+  String get maxPreferredSlots => 'Unaweza kuongeza hadi nafasi 6.';
+
+  @override
+  String get appointmentDetailsTitle => 'Maelezo ya miadi';
+
+  @override
+  String get timeToBeConfirmed => 'Muda utathibitishwa';
+
+  @override
+  String get specialistPendingAssignment => 'Mtaalamu · anasubiri kuteuliwa';
+
+  @override
+  String get couldNotOpenSessionLink =>
+      'Imeshindikana kufungua kiungo cha kipindi';
+
+  @override
+  String get cancelThisAppointmentTitle => 'Unataka kughairi miadi hii?';
+
+  @override
+  String get cancelThisAppointmentBody =>
+      'Mtaalamu wako ataarifiwa. Unaweza kuweka miadi tena muda wowote baadaye.';
+
+  @override
+  String get keep => 'Acha ilivyo';
+
+  @override
+  String get cancelAppointment => 'Ghairi miadi';
+
+  @override
+  String get couldNotCancelTryAgain =>
+      'Imeshindikana kughairi — tafadhali jaribu tena.';
+
+  @override
+  String get appointmentSection => 'Miadi';
+
+  @override
+  String get dateLabel => 'Tarehe';
+
+  @override
+  String get timeLabel => 'Muda';
+
+  @override
+  String get typeLabel => 'Aina';
+
+  @override
+  String get statusLabel => 'Hali';
+
+  @override
+  String get paymentSection => 'Malipo';
+
+  @override
+  String get amountLabel => 'Kiasi';
+
+  @override
+  String get setByAdmin => 'Kimewekwa na msimamizi';
+
+  @override
+  String get completePaymentToConfirm =>
+      'Kamilisha malipo ili kuthibitisha kipindi hiki.';
+
+  @override
+  String get notesAndInstructions => 'Maelezo na maelekezo';
+
+  @override
+  String get missedSessionHelp =>
+      'Umekosa kipindi hiki. Panga upya ili uendelee na mpango wako wa huduma, au zungumza nasi ikiwa unahitaji msaada.';
+
+  @override
+  String get payAndConfirm => 'Lipa na Thibitisha';
+
+  @override
+  String get sessionNotYetJoinable => 'Bado huwezi kujiunga na kipindi';
+
+  @override
+  String get statusCancelled => 'Imeghairiwa';
+
+  @override
+  String get statusMissed => 'Imeikosekana';
+
+  @override
+  String get statusInProgress => 'Inaendelea';
+
+  @override
+  String get statusScheduled => 'Imepangwa';
+
+  @override
+  String get statusAwaitingPaymentLower => 'Inasubiri malipo';
+
+  @override
   String get retry => 'Jaribu tena';
 
   @override
@@ -271,9 +811,6 @@ class AppLocalizationsSw extends AppLocalizations {
 
   @override
   String get startNewConsultation => 'Anza Ushauri Mpya';
-
-  @override
-  String get noUpcomingAppointments => 'Hakuna miadi inayofuata';
 
   @override
   String get bookConsultationToStart => 'Weka miadi ya ushauri kuanza.';

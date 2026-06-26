@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 
 import 'app_palette.dart';
 import 'auth_widgets.dart';
+import '../l10n/l10n_extensions.dart';
 import '../services/auth_service.dart';
 import '../utils/dio_error_message.dart';
 
@@ -74,19 +75,19 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
       await _authService.login(email: email, password: password);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully.')),
+        SnackBar(content: Text(context.l10n.accountCreatedSuccessfully)),
       );
       Navigator.pushReplacementNamed(context, '/home', arguments: fullName);
     } on DioException catch (e) {
       if (!mounted) return;
-      final message = messageFromDioException(e) ?? 'Sign up failed. Please try again.';
+      final message = messageFromDioException(e) ?? context.l10n.signupFailed;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Sign up failed. Please try again.')),
+        SnackBar(content: Text(context.l10n.signupFailed)),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -95,9 +96,10 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final isDoctor = _selectedRole == 'doctor';
     return AuthPageScaffold(
-      subtitle: 'Create your account and start your mental wellness journey',
+      subtitle: l10n.signupSubtitle,
       child: AuthCard(
         child: Form(
           key: _formKey,
@@ -117,44 +119,44 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
               const SizedBox(height: 12),
               SmartAfyaInputField(
                 controller: _fullNameController,
-                hint: 'Full Name',
-                helperText: 'Use your real name for your profile',
+                hint: l10n.fullName,
+                helperText: l10n.fullNameHelper,
                 icon: Icons.person_outline,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   final v = value?.trim() ?? '';
-                  if (v.isEmpty) return 'Please enter your full name.';
-                  if (v.length < 3) return 'Name should be at least 3 characters.';
+                  if (v.isEmpty) return l10n.pleaseEnterFullName;
+                  if (v.length < 3) return l10n.nameMinLength;
                   return null;
                 },
               ),
               const SizedBox(height: 12),
               SmartAfyaInputField(
                 controller: _emailController,
-                hint: 'Email',
-                helperText: 'We will send verification to this email',
+                hint: l10n.email,
+                helperText: l10n.emailSignupHelper,
                 icon: Icons.email_outlined,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   final v = value?.trim() ?? '';
-                  if (v.isEmpty) return 'Please enter your email.';
-                  if (!_isValidEmail(v)) return 'Enter a valid email address.';
+                  if (v.isEmpty) return l10n.pleaseEnterEmail;
+                  if (!_isValidEmail(v)) return l10n.enterValidEmail;
                   return null;
                 },
               ),
               const SizedBox(height: 12),
               SmartAfyaInputField(
                 controller: _phoneController,
-                hint: 'Phone Number',
-                helperText: 'Include country code (e.g. +255...)',
+                hint: l10n.phoneNumber,
+                helperText: l10n.phoneHelper,
                 icon: Icons.phone_outlined,
                 keyboardType: TextInputType.phone,
                 textInputAction: isDoctor ? TextInputAction.next : TextInputAction.next,
                 validator: (value) {
                   final v = value?.trim() ?? '';
-                  if (v.isEmpty) return 'Please enter your phone number.';
-                  if (!_isValidPhone(v)) return 'Enter a valid phone number.';
+                  if (v.isEmpty) return l10n.pleaseEnterPhone;
+                  if (!_isValidPhone(v)) return l10n.enterValidPhone;
                   return null;
                 },
               ),
@@ -169,8 +171,8 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
               const SizedBox(height: 12),
               SmartAfyaInputField(
                 controller: _passwordController,
-                hint: 'Password',
-                helperText: '8+ chars, 1 uppercase, 1 special character',
+                hint: l10n.password,
+                helperText: l10n.passwordSignupHelper,
                 icon: Icons.lock_outline,
                 obscureText: _obscurePassword,
                 textInputAction: TextInputAction.next,
@@ -183,9 +185,9 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
                 ),
                 validator: (value) {
                   final v = value ?? '';
-                  if (v.isEmpty) return 'Please enter your password.';
+                  if (v.isEmpty) return l10n.pleaseEnterPassword;
                   if (!_isStrongPassword(v)) {
-                    return 'Use 8+ chars with 1 uppercase and 1 special character.';
+                    return l10n.passwordStrengthHint;
                   }
                   return null;
                 },
@@ -193,8 +195,8 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
               const SizedBox(height: 12),
               SmartAfyaInputField(
                 controller: _confirmPasswordController,
-                hint: 'Confirm Password',
-                helperText: 'Re-enter your password',
+                hint: l10n.confirmPassword,
+                helperText: l10n.confirmPasswordHelper,
                 icon: Icons.lock_person_outlined,
                 obscureText: _obscureConfirmPassword,
                 textInputAction: TextInputAction.done,
@@ -210,21 +212,21 @@ class _SmartAfyaSignupScreenState extends State<SmartAfyaSignupScreen> {
                 ),
                 validator: (value) {
                   final v = value ?? '';
-                  if (v.isEmpty) return 'Please confirm your password.';
-                  if (v != _passwordController.text) return 'Passwords do not match.';
+                  if (v.isEmpty) return l10n.pleaseConfirmPassword;
+                  if (v != _passwordController.text) return l10n.passwordsDoNotMatch;
                   return null;
                 },
               ),
               const SizedBox(height: 20),
               PrimaryActionButton(
-                label: 'Sign Up',
+                label: l10n.signUp,
                 isLoading: _isLoading,
                 onPressed: _onSignupPressed,
               ),
               const SizedBox(height: 16),
               BottomAuthLink(
-                prefix: 'Already have an account? ',
-                action: 'Login',
+                prefix: l10n.alreadyHaveAccount,
+                action: l10n.login,
                 onTap: () => Navigator.pushReplacementNamed(context, '/login'),
               ),
             ],
@@ -248,6 +250,7 @@ class _RoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     Widget pill({
       required String role,
       required String label,
@@ -304,9 +307,9 @@ class _RoleCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Role',
-            style: TextStyle(
+          Text(
+            l10n.role,
+            style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w800,
               color: SmartAfyaPalette.mutedText,
@@ -316,9 +319,9 @@ class _RoleCard extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              pill(role: 'client', label: 'Client', icon: Icons.person_outline, accent: SmartAfyaPalette.primaryGreen),
+              pill(role: 'client', label: l10n.client, icon: Icons.person_outline, accent: SmartAfyaPalette.primaryGreen),
               const SizedBox(width: 10),
-              pill(role: 'doctor', label: 'Doctor', icon: Icons.medical_services_outlined, accent: SmartAfyaPalette.primaryBlue),
+              pill(role: 'doctor', label: l10n.doctor, icon: Icons.medical_services_outlined, accent: SmartAfyaPalette.primaryBlue),
             ],
           ),
           if (isPrivileged) const SizedBox(height: 0),
@@ -342,15 +345,16 @@ class _SpecialistTypeField extends StatelessWidget {
   static const _hairline = Color(0xFFE4EEF7);
 
   static const _options = <String, String>{
-    'Psychologist': 'psychologist',
-    'Psychiatrist': 'psychiatrist',
-    'Therapist': 'therapist',
-    'Cleric': 'cleric',
-    'Influencer': 'influencer',
+    'psychologist': 'psychologist',
+    'psychiatrist': 'psychiatrist',
+    'therapist': 'therapist',
+    'cleric': 'cleric',
+    'influencer': 'influencer',
   };
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return DropdownButtonFormField<String>(
       initialValue: value,
       items: _options.entries
@@ -358,7 +362,14 @@ class _SpecialistTypeField extends StatelessWidget {
             (e) => DropdownMenuItem<String>(
               value: e.value,
               child: Text(
-                e.key,
+                switch (e.key) {
+                  'psychologist' => l10n.psychologist,
+                  'psychiatrist' => l10n.psychiatrist,
+                  'therapist' => l10n.therapist,
+                  'cleric' => l10n.cleric,
+                  'influencer' => l10n.influencer,
+                  _ => e.key,
+                },
                 style: const TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
@@ -367,12 +378,12 @@ class _SpecialistTypeField extends StatelessWidget {
       onChanged: enabled ? onChanged : null,
       validator: (v) {
         final selected = (v ?? '').trim();
-        if (selected.isEmpty) return 'Please select your specialist type.';
+        if (selected.isEmpty) return l10n.pleaseSelectSpecialistType;
         return null;
       },
       decoration: InputDecoration(
-        labelText: 'Specialist Type',
-        helperText: 'Required for doctor accounts',
+        labelText: l10n.specialistType,
+        helperText: l10n.specialistTypeHelper,
         filled: true,
         fillColor: const Color(0xFFF7FAFD),
         prefixIcon: const Icon(Icons.badge_outlined, color: SmartAfyaPalette.primaryBlue),

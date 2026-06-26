@@ -212,6 +212,978 @@ abstract class AppLocalizations {
   /// **'Login failed. Please try again.'**
   String get loginFailed;
 
+  /// No description provided for @signupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account and start your mental wellness journey'**
+  String get signupSubtitle;
+
+  /// No description provided for @accountCreatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Account created successfully.'**
+  String get accountCreatedSuccessfully;
+
+  /// No description provided for @signupFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up failed. Please try again.'**
+  String get signupFailed;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fullName;
+
+  /// No description provided for @fullNameHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Use your real name for your profile'**
+  String get fullNameHelper;
+
+  /// No description provided for @pleaseEnterFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your full name.'**
+  String get pleaseEnterFullName;
+
+  /// No description provided for @nameMinLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Name should be at least 3 characters.'**
+  String get nameMinLength;
+
+  /// No description provided for @emailSignupHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'We will send verification to this email'**
+  String get emailSignupHelper;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @phoneHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Include country code (e.g. +255...)'**
+  String get phoneHelper;
+
+  /// No description provided for @pleaseEnterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number.'**
+  String get pleaseEnterPhone;
+
+  /// No description provided for @enterValidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid phone number.'**
+  String get enterValidPhone;
+
+  /// No description provided for @passwordSignupHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'8+ chars, 1 uppercase, 1 special character'**
+  String get passwordSignupHelper;
+
+  /// No description provided for @passwordStrengthHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 8+ chars with 1 uppercase and 1 special character.'**
+  String get passwordStrengthHint;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @confirmPasswordHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-enter your password'**
+  String get confirmPasswordHelper;
+
+  /// No description provided for @pleaseConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password.'**
+  String get pleaseConfirmPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? '**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @role.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get role;
+
+  /// No description provided for @specialistType.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialist Type'**
+  String get specialistType;
+
+  /// No description provided for @specialistTypeHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for doctor accounts'**
+  String get specialistTypeHelper;
+
+  /// No description provided for @pleaseSelectSpecialistType.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select your specialist type.'**
+  String get pleaseSelectSpecialistType;
+
+  /// No description provided for @psychologist.
+  ///
+  /// In en, this message translates to:
+  /// **'Psychologist'**
+  String get psychologist;
+
+  /// No description provided for @psychiatrist.
+  ///
+  /// In en, this message translates to:
+  /// **'Psychiatrist'**
+  String get psychiatrist;
+
+  /// No description provided for @therapist.
+  ///
+  /// In en, this message translates to:
+  /// **'Therapist'**
+  String get therapist;
+
+  /// No description provided for @cleric.
+  ///
+  /// In en, this message translates to:
+  /// **'Cleric'**
+  String get cleric;
+
+  /// No description provided for @influencer.
+  ///
+  /// In en, this message translates to:
+  /// **'Influencer'**
+  String get influencer;
+
+  /// No description provided for @doctor.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor'**
+  String get doctor;
+
+  /// No description provided for @client.
+  ///
+  /// In en, this message translates to:
+  /// **'Client'**
+  String get client;
+
+  /// No description provided for @appointmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get appointmentsTitle;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @missed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get missed;
+
+  /// No description provided for @failedToLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load.'**
+  String get failedToLoad;
+
+  /// No description provided for @actionRequiredCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Action required ({count})'**
+  String actionRequiredCount(int count);
+
+  /// No description provided for @careActionsBlurb.
+  ///
+  /// In en, this message translates to:
+  /// **'Your specialist requested a transfer or is unavailable. Tap to choose: transfer or reschedule.'**
+  String get careActionsBlurb;
+
+  /// No description provided for @tapToResolveTransferReschedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to resolve transfer/reschedule'**
+  String get tapToResolveTransferReschedule;
+
+  /// No description provided for @followUpRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up requested'**
+  String get followUpRequested;
+
+  /// No description provided for @suggestedDateDash.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested date: —'**
+  String get suggestedDateDash;
+
+  /// No description provided for @suggestedDateValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested date: {date}'**
+  String suggestedDateValue(String date);
+
+  /// No description provided for @doctorRecommendedAnotherSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Doctor recommended another session'**
+  String get doctorRecommendedAnotherSession;
+
+  /// No description provided for @tapToChooseAvailabilityProceed.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to choose your availability & proceed.'**
+  String get tapToChooseAvailabilityProceed;
+
+  /// No description provided for @followUpInitialDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up session requested by doctor.'**
+  String get followUpInitialDescription;
+
+  /// No description provided for @followUpBookingSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up booking submitted.'**
+  String get followUpBookingSubmitted;
+
+  /// No description provided for @pendingRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending requests'**
+  String get pendingRequests;
+
+  /// No description provided for @allBookingsCoordination.
+  ///
+  /// In en, this message translates to:
+  /// **'All bookings (coordination)'**
+  String get allBookingsCoordination;
+
+  /// No description provided for @bookingStatusTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking · {status}'**
+  String bookingStatusTitle(String status);
+
+  /// No description provided for @bookingTypePreferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Type: {type}\nPreferred: {preferred}'**
+  String bookingTypePreferred(String type, String preferred);
+
+  /// No description provided for @noUpcomingAppointments.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming appointments'**
+  String get noUpcomingAppointments;
+
+  /// No description provided for @noMissedSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'No missed sessions'**
+  String get noMissedSessions;
+
+  /// No description provided for @noCompletedAppointmentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed appointments yet'**
+  String get noCompletedAppointmentsYet;
+
+  /// No description provided for @bookConsultationToGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a consultation to get started.'**
+  String get bookConsultationToGetStarted;
+
+  /// No description provided for @missedSessionsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'When a session is marked missed, it will appear here. You can reschedule anytime.'**
+  String get missedSessionsInfo;
+
+  /// No description provided for @finishedConsultationsInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Finished consultations appear here.'**
+  String get finishedConsultationsInfo;
+
+  /// No description provided for @bookAConsultation.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a consultation'**
+  String get bookAConsultation;
+
+  /// No description provided for @tbdShort.
+  ///
+  /// In en, this message translates to:
+  /// **'TBD'**
+  String get tbdShort;
+
+  /// No description provided for @specialistAssignedShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialist assigned'**
+  String get specialistAssignedShort;
+
+  /// No description provided for @awaitingSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting specialist'**
+  String get awaitingSpecialist;
+
+  /// No description provided for @ctaView.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get ctaView;
+
+  /// No description provided for @ctaReschedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Reschedule'**
+  String get ctaReschedule;
+
+  /// No description provided for @ctaPay.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay'**
+  String get ctaPay;
+
+  /// No description provided for @ctaJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get ctaJoin;
+
+  /// No description provided for @ctaFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get ctaFeedback;
+
+  /// No description provided for @paymentPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get paymentPaid;
+
+  /// No description provided for @paymentInReview.
+  ///
+  /// In en, this message translates to:
+  /// **'In review'**
+  String get paymentInReview;
+
+  /// No description provided for @paymentNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay needed'**
+  String get paymentNeeded;
+
+  /// No description provided for @bookingIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete the details below. Your answers help us match you and prepare for your session.'**
+  String get bookingIntro;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @termsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'By submitting this form, you confirm that the information you provide is accurate to the best of your knowledge. Your responses may be reviewed by your assigned care team to help prepare for your session. If you are experiencing an emergency, contact local emergency services immediately.'**
+  String get termsBody;
+
+  /// No description provided for @lastAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Last accepted: {timestamp}'**
+  String lastAccepted(String timestamp);
+
+  /// No description provided for @acceptTermsContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Terms & Continue'**
+  String get acceptTermsContinue;
+
+  /// No description provided for @viewTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'View Terms & Conditions'**
+  String get viewTerms;
+
+  /// No description provided for @acceptTermsToEnableSubmission.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept the Terms & Conditions above to enable submission.'**
+  String get acceptTermsToEnableSubmission;
+
+  /// No description provided for @availabilityConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability confirmation'**
+  String get availabilityConfirmation;
+
+  /// No description provided for @confirmAttendSelectedTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'I confirm I can attend at the selected times.'**
+  String get confirmAttendSelectedTimes;
+
+  /// No description provided for @confirmAvailabilityToEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm availability to enable submission.'**
+  String get confirmAvailabilityToEnable;
+
+  /// No description provided for @stateOfMind.
+  ///
+  /// In en, this message translates to:
+  /// **'State of mind'**
+  String get stateOfMind;
+
+  /// No description provided for @describeCurrentConcerns.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your current concerns'**
+  String get describeCurrentConcerns;
+
+  /// No description provided for @pleaseAddMoreDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add more detail (at least a short paragraph).'**
+  String get pleaseAddMoreDetail;
+
+  /// No description provided for @whoShouldAttendYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Who should attend you?'**
+  String get whoShouldAttendYou;
+
+  /// No description provided for @whoShouldAttendHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a specific psychologist, psychiatrist, therapist, faith leader, or even a known mental-health influencer. Don’t see your person? Use “Special arrangement” inside the picker.'**
+  String get whoShouldAttendHelp;
+
+  /// No description provided for @sessionType.
+  ///
+  /// In en, this message translates to:
+  /// **'Session type'**
+  String get sessionType;
+
+  /// No description provided for @audio.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get audio;
+
+  /// No description provided for @video.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// No description provided for @physical.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical'**
+  String get physical;
+
+  /// No description provided for @sessionTypeVisitSite.
+  ///
+  /// In en, this message translates to:
+  /// **'Session type (visit site)'**
+  String get sessionTypeVisitSite;
+
+  /// No description provided for @homeVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Home visit'**
+  String get homeVisit;
+
+  /// No description provided for @officeClinic.
+  ///
+  /// In en, this message translates to:
+  /// **'Office / clinic'**
+  String get officeClinic;
+
+  /// No description provided for @duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// No description provided for @preferredDatesTimes.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred dates & times (at least 3)'**
+  String get preferredDatesTimes;
+
+  /// No description provided for @preferredDatesHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least 3 slots on different calendar days. Each slot uses your chosen duration as the session length.'**
+  String get preferredDatesHelp;
+
+  /// No description provided for @addSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Add slot'**
+  String get addSlot;
+
+  /// No description provided for @visitLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit location'**
+  String get visitLocation;
+
+  /// No description provided for @visitLocationHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Where should your care team meet you?'**
+  String get visitLocationHelp;
+
+  /// No description provided for @street.
+  ///
+  /// In en, this message translates to:
+  /// **'Street'**
+  String get street;
+
+  /// No description provided for @streetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Masaki Peninsula, Plot 12'**
+  String get streetHint;
+
+  /// No description provided for @enterStreetOrArea.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your street or area.'**
+  String get enterStreetOrArea;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city;
+
+  /// No description provided for @cityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Dar es Salaam'**
+  String get cityHint;
+
+  /// No description provided for @enterCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your city.'**
+  String get enterCity;
+
+  /// No description provided for @selectedSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected specialist'**
+  String get selectedSpecialist;
+
+  /// No description provided for @lockedForThisBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked for this booking'**
+  String get lockedForThisBooking;
+
+  /// No description provided for @chooseYourSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your specialist'**
+  String get chooseYourSpecialist;
+
+  /// No description provided for @browseSpecialistsHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse psychologists, clerics, influencers and more — or let Smart Afya match you.'**
+  String get browseSpecialistsHelp;
+
+  /// No description provided for @smartAfyaMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Afya match'**
+  String get smartAfyaMatch;
+
+  /// No description provided for @nextAvailableSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Next available specialist that fits your profile'**
+  String get nextAvailableSpecialist;
+
+  /// No description provided for @smartAfyaSpecialist.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Afya specialist'**
+  String get smartAfyaSpecialist;
+
+  /// No description provided for @specialArrangement.
+  ///
+  /// In en, this message translates to:
+  /// **'Special arrangement'**
+  String get specialArrangement;
+
+  /// No description provided for @adminWillCoordinate.
+  ///
+  /// In en, this message translates to:
+  /// **'admin will coordinate'**
+  String get adminWillCoordinate;
+
+  /// No description provided for @noPreference.
+  ///
+  /// In en, this message translates to:
+  /// **'No preference'**
+  String get noPreference;
+
+  /// No description provided for @matchAnyoneAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Afya will match you with anyone available'**
+  String get matchAnyoneAvailable;
+
+  /// No description provided for @change.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @physicalPriceNegotiable.
+  ///
+  /// In en, this message translates to:
+  /// **'Physical session price is negotiable (admin + client).'**
+  String get physicalPriceNegotiable;
+
+  /// No description provided for @estimatedPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated price: {price}'**
+  String estimatedPrice(String price);
+
+  /// No description provided for @submitBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit booking'**
+  String get submitBooking;
+
+  /// No description provided for @acceptTermsToSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Terms to submit'**
+  String get acceptTermsToSubmit;
+
+  /// No description provided for @confirmAvailabilityToSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm availability to submit'**
+  String get confirmAvailabilityToSubmit;
+
+  /// No description provided for @add3PreferredDatesToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Add 3 preferred dates to continue'**
+  String get add3PreferredDatesToContinue;
+
+  /// No description provided for @completePaymentToSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete payment to submit'**
+  String get completePaymentToSubmit;
+
+  /// No description provided for @paymentReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment received'**
+  String get paymentReceived;
+
+  /// No description provided for @paymentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment required'**
+  String get paymentRequired;
+
+  /// No description provided for @canSubmitBookingNow.
+  ///
+  /// In en, this message translates to:
+  /// **'You can submit your booking request now. Admin will confirm and schedule.'**
+  String get canSubmitBookingNow;
+
+  /// No description provided for @payBeforeSubmitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay {price} before submitting. Upload proof or complete mobile money / bank transfer.'**
+  String payBeforeSubmitting(String price);
+
+  /// No description provided for @payNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay now'**
+  String get payNow;
+
+  /// No description provided for @mustAcceptTermsBeforeContinuing.
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept Terms & Conditions before continuing.'**
+  String get mustAcceptTermsBeforeContinuing;
+
+  /// No description provided for @consentTimestampMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Consent timestamp missing. Please accept Terms & Conditions again.'**
+  String get consentTimestampMissing;
+
+  /// No description provided for @pleaseConfirmAvailabilityBeforeContinuing.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your availability before continuing.'**
+  String get pleaseConfirmAvailabilityBeforeContinuing;
+
+  /// No description provided for @pleaseAdd3PreferredSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add at least 3 preferred slots on different days.'**
+  String get pleaseAdd3PreferredSlots;
+
+  /// No description provided for @selectHomeOrOfficePhysicalVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Select home or office for the physical visit.'**
+  String get selectHomeOrOfficePhysicalVisit;
+
+  /// No description provided for @couldNotStartPaymentTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start payment. Please try again.'**
+  String get couldNotStartPaymentTryAgain;
+
+  /// No description provided for @paymentRecordedSubmitNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment recorded. You can submit your booking now.'**
+  String get paymentRecordedSubmitNow;
+
+  /// No description provided for @couldNotStartPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start payment.'**
+  String get couldNotStartPayment;
+
+  /// No description provided for @maxPreferredSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'You can add up to 6 preferred slots.'**
+  String get maxPreferredSlots;
+
+  /// No description provided for @appointmentDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment details'**
+  String get appointmentDetailsTitle;
+
+  /// No description provided for @timeToBeConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to be confirmed'**
+  String get timeToBeConfirmed;
+
+  /// No description provided for @specialistPendingAssignment.
+  ///
+  /// In en, this message translates to:
+  /// **'Specialist · pending assignment'**
+  String get specialistPendingAssignment;
+
+  /// No description provided for @couldNotOpenSessionLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the session link'**
+  String get couldNotOpenSessionLink;
+
+  /// No description provided for @cancelThisAppointmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this appointment?'**
+  String get cancelThisAppointmentTitle;
+
+  /// No description provided for @cancelThisAppointmentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your specialist will be notified. You can re-book any time afterwards.'**
+  String get cancelThisAppointmentBody;
+
+  /// No description provided for @keep.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep'**
+  String get keep;
+
+  /// No description provided for @cancelAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel appointment'**
+  String get cancelAppointment;
+
+  /// No description provided for @couldNotCancelTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not cancel — please try again.'**
+  String get couldNotCancelTryAgain;
+
+  /// No description provided for @appointmentSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment'**
+  String get appointmentSection;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get dateLabel;
+
+  /// No description provided for @timeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timeLabel;
+
+  /// No description provided for @typeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get typeLabel;
+
+  /// No description provided for @statusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get statusLabel;
+
+  /// No description provided for @paymentSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get paymentSection;
+
+  /// No description provided for @amountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amountLabel;
+
+  /// No description provided for @setByAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Set by admin'**
+  String get setByAdmin;
+
+  /// No description provided for @completePaymentToConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete payment to confirm this session.'**
+  String get completePaymentToConfirm;
+
+  /// No description provided for @notesAndInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes & instructions'**
+  String get notesAndInstructions;
+
+  /// No description provided for @missedSessionHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'You missed this session. Reschedule to keep your care plan on track, or chat with our team if you need help.'**
+  String get missedSessionHelp;
+
+  /// No description provided for @payAndConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay & Confirm'**
+  String get payAndConfirm;
+
+  /// No description provided for @sessionNotYetJoinable.
+  ///
+  /// In en, this message translates to:
+  /// **'Session not yet joinable'**
+  String get sessionNotYetJoinable;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// No description provided for @statusMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get statusMissed;
+
+  /// No description provided for @statusInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get statusInProgress;
+
+  /// No description provided for @statusScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get statusScheduled;
+
+  /// No description provided for @statusAwaitingPaymentLower.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting payment'**
+  String get statusAwaitingPaymentLower;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
@@ -589,12 +1561,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Start New Consultation'**
   String get startNewConsultation;
-
-  /// No description provided for @noUpcomingAppointments.
-  ///
-  /// In en, this message translates to:
-  /// **'No upcoming appointments'**
-  String get noUpcomingAppointments;
 
   /// No description provided for @bookConsultationToStart.
   ///

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../l10n/format_helpers.dart';
+import '../l10n/l10n_extensions.dart';
 import '../services/api_service.dart';
 import 'app_palette.dart';
 import 'chat_list_screen.dart';
@@ -144,16 +146,16 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
   Future<void> _handleJoin() async {
     final link = (_session.meetingLink ?? '').trim();
     if (link.isEmpty) {
-      _toast('Session link not available yet');
+      _toast(context.l10n.sessionLinkNotAvailable);
       return;
     }
     final uri = Uri.tryParse(link);
     if (uri == null) {
-      _toast('Session link not available yet');
+      _toast(context.l10n.sessionLinkNotAvailable);
       return;
     }
     final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!ok && mounted) _toast('Could not open the session link');
+    if (!ok && mounted) _toast(context.l10n.couldNotOpenSessionLink);
   }
 
   Future<void> _handleReschedule() async {
@@ -184,16 +186,14 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Cancel this appointment?'),
-        content: const Text(
-          'Your specialist will be notified. You can re-book any time afterwards.',
-        ),
+        title: Text(context.l10n.cancelThisAppointmentTitle),
+        content: Text(context.l10n.cancelThisAppointmentBody),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Keep')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(context.l10n.keep)),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: FilledButton.styleFrom(backgroundColor: SmartAfyaPalette.primaryBlue),
-            child: const Text('Cancel appointment'),
+            child: Text(context.l10n.cancelAppointment),
           ),
         ],
       ),
@@ -208,7 +208,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _busy = false);
-      _toast('Could not cancel — please try again.');
+      _toast(context.l10n.couldNotCancelTryAgain);
     }
   }
 
@@ -220,18 +220,18 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final dt = _parseLocal(_session.scheduledAt);
-    final dateLabel = dt == null ? 'Time to be confirmed' : _formatDate(dt);
+    final dateLabel = dt == null ? context.l10n.timeToBeConfirmed : _formatDate(dt);
     final timeLabel = dt == null ? '' : _formatTime(dt);
-    final typeLabel = _friendlyType(_booking?.sessionType);
+    final typeLabel = localizedSessionType(context.l10n, _booking?.sessionType, compact: true);
     final typeIcon = _typeIcon(_booking?.sessionType);
     final statusInfo = _statusBadge(_session.status);
     final paymentInfo = _paymentBadge();
     final doctorName = (_doctor?.fullName.trim().isNotEmpty == true)
         ? _doctor!.fullName.trim()
         : ((_session.doctorId ?? '').trim().isNotEmpty
-            ? 'Specialist assigned'
-            : 'Specialist · pending assignment');
-    final specialtyLabel = _doctor?.specialistLabel ?? 'Mental health specialist';
+            ? context.l10n.specialistAssignedShort
+            : context.l10n.specialistPendingAssignment);
+    final specialtyLabel = _doctor?.specialistLabel ?? context.l10n.mentalHealthSpecialist;
     final initials = _initialsFromName(_doctor?.fullName);
 
     final filteredNotes = _filterReadableNotes(_session.notes);
@@ -243,7 +243,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
         backgroundColor: SmartAfyaPalette.scaffoldBg,
         elevation: 0,
         foregroundColor: SmartAfyaPalette.deepText,
-        title: const Text('Appointment details', style: TextStyle(fontWeight: FontWeight.w900)),
+        title: Text(context.l10n.appointmentDetailsTitle, style: const TextStyle(fontWeight: FontWeight.w900)),
       ),
       body: SafeArea(
         child: RefreshIndicator(
@@ -310,19 +310,26 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _SectionTitle(label: 'Appointment'),
+                    _SectionTitle(label: context.l10n.appointmentSection),
                     const SizedBox(height: 10),
-                    _DetailRow(icon: Icons.event_rounded, label: 'Date', value: dateLabel),
-                    if (timeLabel.isNotEmpty) _DetailRow(icon: Icons.schedule_rounded, label: 'Time', value: timeLabel),
-                    _DetailRow(icon: typeIcon, label: 'Type', value: typeLabel),
+                    _DetailRow(icon: Icons.event_rounded, label: context.l10n.dateLabel, value: dateLabel),
+                    if (timeLabel.isNotEmpty)
+                      _DetailRow(icon: Icons.schedule_rounded, label: context.l10n.timeLabel, value: timeLabel),
+                    _DetailRow(icon: typeIcon, label: context.l10n.typeLabel, value: typeLabel),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Row(
                         children: [
                           const SizedBox(width: 28, child: Icon(Icons.flag_rounded, size: 18, color: SmartAfyaPalette.mutedText)),
                           const SizedBox(width: 10),
-                          const Text('Status',
-                              style: TextStyle(color: SmartAfyaPalette.mutedText, fontWeight: FontWeight.w700, fontSize: 13)),
+                          Text(
+                            context.l10n.statusLabel,
+                            style: const TextStyle(
+                              color: SmartAfyaPalette.mutedText,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 13,
+                            ),
+                          ),
                           const Spacer(),
                           _Pill(label: statusInfo.label, color: statusInfo.color),
                         ],
@@ -340,17 +347,17 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        const Expanded(child: _SectionTitle(label: 'Payment')),
+                        Expanded(child: _SectionTitle(label: context.l10n.paymentSection)),
                         _Pill(label: paymentInfo.label, color: paymentInfo.color),
                       ],
                     ),
                     const SizedBox(height: 10),
                     _DetailRow(
                       icon: Icons.payments_rounded,
-                      label: 'Amount',
+                      label: context.l10n.amountLabel,
                       value: _payment?.amount != null
                           ? 'TZS ${_payment!.amount!.toStringAsFixed(0)}'
-                          : 'Set by admin',
+                          : context.l10n.setByAdmin,
                     ),
                     if (paymentInstructions.isNotEmpty) ...[
                       const SizedBox(height: 6),
@@ -384,10 +391,10 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                           children: [
                             const Icon(Icons.info_outline_rounded, size: 18, color: Color(0xFFB8740B)),
                             const SizedBox(width: 8),
-                            const Expanded(
+                            Expanded(
                               child: Text(
-                                'Complete payment to confirm this session.',
-                                style: TextStyle(
+                                context.l10n.completePaymentToConfirm,
+                                style: const TextStyle(
                                   color: Color(0xFF7A4D04),
                                   fontWeight: FontWeight.w700,
                                   height: 1.3,
@@ -410,7 +417,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const _SectionTitle(label: 'Notes & instructions'),
+                      _SectionTitle(label: context.l10n.notesAndInstructions),
                       const SizedBox(height: 10),
                       Text(
                         filteredNotes,
@@ -439,13 +446,13 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Icon(Icons.event_busy_rounded, color: Color(0xFFE65100), size: 22),
                       SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'You missed this session. Reschedule to keep your care plan on track, or chat with our team if you need help.',
-                          style: TextStyle(
+                          context.l10n.missedSessionHelp,
+                          style: const TextStyle(
                             color: SmartAfyaPalette.deepText,
                             fontWeight: FontWeight.w700,
                             height: 1.35,
@@ -459,31 +466,31 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                 const SizedBox(height: 12),
                 _PrimaryButton(
                   icon: Icons.event_repeat_rounded,
-                  label: 'Reschedule',
+                  label: context.l10n.reschedule,
                   onPressed: _busy ? null : _handleReschedule,
                 ),
                 const SizedBox(height: 10),
                 _SecondaryButton(
                   icon: Icons.chat_bubble_outline_rounded,
-                  label: 'Get help',
+                  label: context.l10n.getHelp,
                   onPressed: _busy ? null : _handleGetHelp,
                 ),
               ] else if (_needsPayment)
                 _PrimaryButton(
                   icon: Icons.payments_rounded,
-                  label: 'Pay & Confirm',
+                  label: context.l10n.payAndConfirm,
                   onPressed: _busy ? null : _handlePay,
                 )
               else if (_isJoinable)
                 _PrimaryButton(
                   icon: Icons.video_call_rounded,
-                  label: 'Join Session',
+                  label: context.l10n.joinSession,
                   onPressed: _busy ? null : _handleJoin,
                 )
               else
                 _PrimaryButton(
                   icon: Icons.lock_clock_rounded,
-                  label: 'Session not yet joinable',
+                  label: context.l10n.sessionNotYetJoinable,
                   onPressed: null,
                 ),
 
@@ -491,7 +498,7 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
                 const SizedBox(height: 10),
                 _SecondaryButton(
                   icon: Icons.close_rounded,
-                  label: 'Cancel appointment',
+                  label: context.l10n.cancelAppointment,
                   onPressed: _busy ? null : _handleCancel,
                 ),
               ],
@@ -506,19 +513,21 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
 
   ({String label, Color color}) _statusBadge(String status) {
     final s = status.toLowerCase().trim();
-    if (s == 'completed') return (label: 'Completed', color: SmartAfyaPalette.primaryGreen);
-    if (s == 'cancelled') return (label: 'Cancelled', color: const Color(0xFFB23A3A));
-    if (s == 'no_show' || s == 'no-show') return (label: 'Missed', color: const Color(0xFFE65100));
-    if (s == 'in_progress' || s == 'in-progress') return (label: 'In progress', color: SmartAfyaPalette.primaryBlue);
-    if (s == 'scheduled') return (label: 'Scheduled', color: SmartAfyaPalette.primaryBlue);
-    if (s == 'pending' || s == 'requested') return (label: 'Pending', color: const Color(0xFFD08600));
+    final l10n = context.l10n;
+    if (s == 'completed') return (label: l10n.statusCompleted, color: SmartAfyaPalette.primaryGreen);
+    if (s == 'cancelled') return (label: l10n.statusCancelled, color: const Color(0xFFB23A3A));
+    if (s == 'no_show' || s == 'no-show') return (label: l10n.statusMissed, color: const Color(0xFFE65100));
+    if (s == 'in_progress' || s == 'in-progress') return (label: l10n.statusInProgress, color: SmartAfyaPalette.primaryBlue);
+    if (s == 'scheduled') return (label: l10n.statusScheduled, color: SmartAfyaPalette.primaryBlue);
+    if (s == 'pending' || s == 'requested') return (label: l10n.statusPending, color: const Color(0xFFD08600));
     return (label: status, color: SmartAfyaPalette.mutedText);
   }
 
   ({String label, Color color}) _paymentBadge() {
-    if (_paymentCompleted) return (label: 'Confirmed', color: SmartAfyaPalette.primaryGreen);
-    if (_paymentInReview) return (label: 'In review', color: SmartAfyaPalette.primaryBlue);
-    return (label: 'Awaiting payment', color: const Color(0xFFD08600));
+    final l10n = context.l10n;
+    if (_paymentCompleted) return (label: l10n.statusConfirmed, color: SmartAfyaPalette.primaryGreen);
+    if (_paymentInReview) return (label: l10n.paymentInReview, color: SmartAfyaPalette.primaryBlue);
+    return (label: l10n.statusAwaitingPaymentLower, color: const Color(0xFFD08600));
   }
 
   static String _initialsFromName(String? fullName) {
@@ -528,15 +537,6 @@ class _AppointmentDetailScreenState extends State<AppointmentDetailScreen> {
     if (parts.isEmpty) return '?';
     if (parts.length == 1) return parts.first.substring(0, 1).toUpperCase();
     return (parts.first[0] + parts.last[0]).toUpperCase();
-  }
-
-  static String _friendlyType(String? type) {
-    final s = (type ?? '').toLowerCase().trim();
-    if (s == 'video') return 'Video consultation';
-    if (s == 'audio') return 'Audio consultation';
-    if (s == 'physical') return 'In-person visit';
-    if (s == 'online') return 'Online consultation';
-    return 'Consultation';
   }
 
   static IconData _typeIcon(String? type) {
